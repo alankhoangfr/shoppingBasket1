@@ -3,7 +3,7 @@ const mongoose = require("mongoose")
 const router = express.Router()
 //Overall Model
 
-const OverAll = require("../../models/overall")
+const OverAll = require("../../models/Overall")
 
 router.get("/",(req,res)=>{
 	OverAll.findById(0)

@@ -4,7 +4,7 @@ const router = express.Router()
 //SuperMarket Model
 
 const SuperMarket = require("../../models/SuperMarket")
-const OverAll = require("../../models/overall")
+const OverAll = require("../../models/Overall")
 //@route Get api/SuperMarkets
 //@desc Get all SuperMarkets
 //@access Public

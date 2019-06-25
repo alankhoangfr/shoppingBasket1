@@ -5,7 +5,7 @@ const router = express.Router()
 
 const Item = require("../../models/Item")
 const SuperMarket = require("../../models/SuperMarket")
-const OverAll = require("../../models/overall")
+const OverAll = require("../../models/Overall")
 
 router.get("/",(req,res)=>{
 	Item.find()
