@@ -20,6 +20,7 @@ export default function (state=initialState, action) {
 				loading:false,
 			}
 		case GET_SUPERMARKETSMARKERS:
+			console.log(action.payload)
 			var listOfShops = {}
 			action.payload.map((shop)=>{
 				listOfShops[shop._id]=shop

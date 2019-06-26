@@ -93,7 +93,7 @@ export class Map extends Component {
     				return null
     			}
     			 action = async()=>{
-    			 	const updateinfo = await this.props.getSuperMarketsMarkers({"lat":lat,"lng":lng,"bound":[],zoom:15})
+    			 	const updateinfo = await this.props.getSuperMarketsMarkers({"lat":lat,"lng":lng,"bound":[],zoom:15,markers:null})
     			 	const state = await this.setState({
 						mapPosition: {
 							lat: lat,
@@ -119,7 +119,7 @@ export class Map extends Component {
 			latValue = place.geometry.location.lat(),
 			lngValue = place.geometry.location.lng();
 			var action = async()=>{
-				const updateinfo = await this.props.getSuperMarketsMarkers({"lat":latValue,"lng":lngValue,"bound":null,zoom:15})
+				const updateinfo = await this.props.getSuperMarketsMarkers({"lat":latValue,"lng":lngValue,"bound":null,zoom:15,markers:null})
 				const state = await this.setState({
 						mapPosition: {
 							lat: latValue,
@@ -145,8 +145,9 @@ export class Map extends Component {
 	};
 	mapmovedZoom=()=>{
 		var action = async()=>{
-			const updateinfo = await  this.props.getSuperMarketsMarkers({lat:this.state.map.getCenter().lat(),"lng":this.state.map.getCenter().lng(),
-			 	"bound":JSON.stringify(this.state.map.getBounds()),"zoom":this.state.map.getZoom()})
+			const find = await this.markersInBound(this.props.superMarket.markers1,JSON.stringify(this.state.map.getBounds()))
+			const updatemarkers = await  this.props.getSuperMarketsMarkers({lat:this.state.map.getCenter().lat(),lng:this.state.map.getCenter().lng(),
+			 	bound:JSON.stringify(this.state.map.getBounds()),zoom:this.state.map.getZoom(),markers:find.ids,markersComplete:find.result})
 			const state = await this.setState({
 				bound:JSON.stringify(this.state.map.getBounds()),
 				movePosition: {
@@ -175,7 +176,17 @@ export class Map extends Component {
 			map:mapRef,
 			maploading:true})	
 	}
-	
+	markersInBound = (shops,parseBound)=>{
+		var result_id =[]
+		var result = []
+		parseBound = JSON.parse(parseBound)
+		shops.map((shop)=>{
+			if (shop.lat>parseBound.south && shop.lat<parseBound.north && shop.lng>parseBound.west && shop.lng<parseBound.east){
+				result.push(shop)
+				result_id.push(shop._id)}	
+			})	
+		return {ids:JSON.stringify(result_id),result:result}
+	}
 	render() {	
 	const AsyncMap = withScriptjs(
 		withGoogleMap(
