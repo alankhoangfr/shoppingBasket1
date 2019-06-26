@@ -82,7 +82,7 @@ export class ItemDisplay extends React.Component {
          let card = 
             <Card style={{marginTop:"20px"}} draggable={true} onDragStart={this.onStartDrag}>
                 <CardBody className="text-center">
-                    <CardTitle>{this.state.result["Product Name"]}</CardTitle>
+                    <CardTitle>{this.state.result["product_name"]}</CardTitle>
                     <CardSubtitle>{this.state.result["Ingredients Text"]}</CardSubtitle>        
                 </CardBody>
                    {cardImage}

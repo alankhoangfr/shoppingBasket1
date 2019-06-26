@@ -31,6 +31,7 @@ export class Map extends Component {
 			zoom:this.props.overAll.zoom,
 			moving:false,
 			maploading:false,
+			bound:null,
 		}
 	}
 	shouldComponentUpdate( nextProps, nextState ){	
@@ -64,7 +65,7 @@ export class Map extends Component {
 			const input = await this.setState({
 				input:false
 			})
-			this.props.getSuperMarketsMarkers()
+			
 
 		}
 		action()
@@ -92,6 +93,7 @@ export class Map extends Component {
     				return null
     			}
     			 action = async()=>{
+    			 	const updateinfo = await this.props.getSuperMarketsMarkers({"lat":lat,"lng":lng,"bound":[],zoom:15})
     			 	const state = await this.setState({
 						mapPosition: {
 							lat: lat,
@@ -104,9 +106,8 @@ export class Map extends Component {
 						zoom:15,
 						input:true,
 						moving:false,
-					})
-    				const updateinfo = await this.props.updateInfo({"lat":lat,"lng":lng,"bound":[]})
-	    			this.props.getSuperMarketsMarkers()
+					})	
+	    			this.props.updateInfo({"lat":lat,"lng":lng,"bound":[]})
 
     			}
     			action()
@@ -118,7 +119,8 @@ export class Map extends Component {
 			latValue = place.geometry.location.lat(),
 			lngValue = place.geometry.location.lng();
 			var action = async()=>{
-					const state = await this.setState({
+				const updateinfo = await this.props.getSuperMarketsMarkers({"lat":latValue,"lng":lngValue,"bound":null,zoom:15})
+				const state = await this.setState({
 						mapPosition: {
 							lat: latValue,
 							lng: lngValue
@@ -132,8 +134,8 @@ export class Map extends Component {
 						moving:false,
 					})
 
-    				const updateinfo = await this.props.updateInfo({"lat":latValue,"lng":lngValue,"bound":[]})
-					this.props.getSuperMarketsMarkers()
+    				
+				this.props.updateInfo({"lat":latValue,"lng":lngValue,"bound":[]})
     			}
     		action()
 			
@@ -143,6 +145,8 @@ export class Map extends Component {
 	};
 	mapmovedZoom=()=>{
 		var action = async()=>{
+			const updateinfo = await  this.props.getSuperMarketsMarkers({lat:this.state.map.getCenter().lat(),"lng":this.state.map.getCenter().lng(),
+			 	"bound":JSON.stringify(this.state.map.getBounds()),"zoom":this.state.map.getZoom()})
 			const state = await this.setState({
 				bound:JSON.stringify(this.state.map.getBounds()),
 				movePosition: {
@@ -156,10 +160,9 @@ export class Map extends Component {
 				moving:true,
 				zoom:this.state.map.getZoom(),
 		})
-			const updateinfo = await this.props.updateInfo({
+			this.props.updateInfo({
 					"lat":this.state.map.getCenter().lat(),"lng":this.state.map.getCenter().lng(),"bound":JSON.stringify(this.state.map.getBounds()),
 					"zoom":this.state.map.getZoom()})
-			 this.props.getSuperMarketsMarkers()
 		}
 		action()
 

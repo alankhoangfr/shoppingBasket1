@@ -17,6 +17,7 @@ router.get("/",(req,res)=>{
 
 })
 router.get("/filterItems",(req,res)=>{
+	console.log(req.query.space)
 	OverAll.findById(0).
 		then(info=>{
 			let result

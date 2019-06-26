@@ -11,10 +11,15 @@ export const getSuperMarkets = () =>dispatch =>{
 			payload: res.data
 		}))
 }
-export const getSuperMarketsMarkers = () =>dispatch =>{
+export const getSuperMarketsMarkers = (info) =>dispatch =>{
 	dispatch(setItemsLoading())
 	axios
-		.get("api/superMarkets/latnlong")
+		.get("api/superMarkets/latnlong",{
+			params:{
+				lat:info.lat,
+				lng:info.lng,
+				bound:info.bound,
+				zoom:info.zoom}})
 		.then(res=>dispatch({
 			type:GET_SUPERMARKETSMARKERS,
 			payload: res.data

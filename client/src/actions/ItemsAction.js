@@ -11,10 +11,13 @@ export const getItems= () =>dispatch =>{
 			payload: res.data
 		}))
 }
-export const filterItems = () =>dispatch =>{
+export const filterItems = (space) =>dispatch =>{
+	const filteredSpace = space.filter((s)=>s!==null)
 	dispatch(setItemsLoading())
 	axios
-		.get("api/items/filterItems")
+		.get("api/items/filterItems",{
+			params:{
+				space:filteredSpace}})
 		.then(res=>dispatch({
 			type:FILTER_ITEMS,
 			payload: res.data

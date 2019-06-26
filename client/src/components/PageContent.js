@@ -19,7 +19,6 @@ class PageContent extends Component {
 		const resetSpace = await this.props.updateInfo({"space1": null, "space2": null,"space3":null,basket:[]})
 		const getinfo = await this.props.getInfo()
 		const updateinfo = await checkLatLong(this.props.overAll.lat,this.props.overAll.lng)
-		this.props.getSuperMarketsMarkers()
 	}
 	componentDidMount(){	
 		this.start()

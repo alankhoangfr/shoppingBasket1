@@ -1,8 +1,8 @@
 import React, {Component,Suspense} from 'react';
 import { Container, Row,Col } from 'reactstrap';
-import InfoArea from "./SearchShop/InfoArea"
 import { Spinner } from 'reactstrap';
 const Map = React.lazy(()=> import("./SearchShop/Map"))
+const InfoArea = React.lazy(()=> import("./SearchShop/InfoArea"))
 
 class SearchShop extends Component {
   shopSelectedCompare=(markerObject,event)=>{
@@ -31,10 +31,12 @@ class SearchShop extends Component {
 						</Suspense> 
 					</Col>
 					<Col sm={6}>
+						<Suspense fallback = {loading} >
 						<InfoArea
 							shopSelectedCompare={this.shopSelectedCompare}
 							compareBasket={this.props.compareBasket}
 						/>
+						</Suspense> 
 					</Col>
 				</Row>
 		    </Container>

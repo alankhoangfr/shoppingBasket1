@@ -55,33 +55,32 @@ router.delete("/:id",(req,res)=>{
 })
 
 router.get("/latnlong",(req,res)=>{
-	OverAll.findById(0).then(info=>{
-        let coord
-		if (info.bound.length===0){
-			coord = {
-				uplat:info.lat+0.01*info.zoom/15,
-				downlat:info.lat-0.01*info.zoom/15,
-				uplng:info.lng+0.01*info.zoom/15,
-				downlng:info.lng-0.01*info.zoom/15,
+	let coord
+	if(req.query.bound===null||req.query.bound===undefined){
+		 coord = {
+				uplat:parseFloat(req.query.lat)+0.01*parseFloat(req.query.zoom)/15,
+				downlat:parseFloat(req.query.lat)-0.01*parseFloat(req.query.zoom)/15,
+				uplng:parseFloat(req.query.lng)+0.01*parseFloat(req.query.zoom)/15,
+				downlng:parseFloat(req.query.lng)-0.01*parseFloat(req.query.zoom)/15,
 			}
-		}else{
-            const bound = JSON.parse(info.bound)
-            coord = {
+
+	}else {
+		const bound =JSON.parse(req.query.bound)
+		coord = {
                 uplat:bound.north,
                 downlat:bound.south,
                 uplng:bound.east,
                 downlng:bound.west,
             }
-        }
-        SuperMarket.find({lat:{$gt:coord.downlat,$lt:coord.uplat},lng:{$gt:coord.downlng,$lt:coord.uplng}})
-            .then(supermarkets=>res.json(supermarkets))
-            .catch(err=>res.status(404).json({
-                success:false,
-                comment:coord
+	}
+    SuperMarket.find({lat:{$gt:coord.downlat,$lt:coord.uplat},lng:{$gt:coord.downlng,$lt:coord.uplng}})
+        .then(supermarkets=>res.json(supermarkets))
+        .catch(err=>res.status(404).json({
+            success:false,
+            comment:coord
         }))
 
-		})
-})
+	})
 router.patch("/addItemToShop/:id",(req,res)=>{
 	SuperMarket.findById([req.params.id])
 	.then(shop=>{
