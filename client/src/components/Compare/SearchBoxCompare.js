@@ -11,7 +11,6 @@ export class SearchBoxCompare extends Component {
 	state = initialState
 	
     shouldComponentUpdate(nextProps,nextState){
-    	console.log(nextProps,this.props)
 	    const {space1,space2,space3} = this.props.overAll
 	    const spaces =[space1,space2,space3]
 	    const nspaces =[nextProps.overAll.space1,nextProps.overAll.space2,nextProps.overAll.space3]

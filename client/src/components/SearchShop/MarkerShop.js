@@ -11,9 +11,7 @@ export class MarkerShop extends Component {
 		super(props)
 	}
 	shouldComponentUpdate(nextProps, nextState){
-		console.log("markerShop ShouldCOmponentUpdate",nextProps,this.props)
 		if(this.props.superMarket.markerSelected!==nextProps.superMarket.markerSelected){
-			console.log("marker clicked")
 			return true	
 		}else{
 			return false	

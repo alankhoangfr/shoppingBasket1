@@ -224,7 +224,6 @@ export class CardShops extends Component{
  		this.props.cancelCardSpace()
  	}
 	render(){
-		console.log("cardShop",this.state,this.props)
 		var cardComparsion=(space,id) => ( 	
 			<Card body className="text-center" >
 				<CardTitle>

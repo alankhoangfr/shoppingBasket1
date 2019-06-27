@@ -11,7 +11,6 @@ export class SearchBoxCompare extends Component {
 	state = initialState
 
     shouldComponentUpdate(nextProps,nextState){
-    	console.log(nextProps,this.props)
 	    if(this.props.supermarket_selected!==nextProps.supermarket_selected	){
 			return true
 		}

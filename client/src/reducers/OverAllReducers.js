@@ -27,6 +27,7 @@ export default function (state=initialState, action) {
 				space1:action.payload.space1,
 				space2:action.payload.space2,
 				space3:action.payload.space3,
+				loading:false,
 
 			}
 		case UPDATE_INFO:
@@ -58,6 +59,11 @@ export default function (state=initialState, action) {
 			return {
 				...state,
 				basket:[]
+			}
+		case ITEMS_LOADING:
+			return {
+				...state,
+				loading:true
 			}
 
 		default:

@@ -6,6 +6,7 @@ import classnames from 'classnames';
 import {connect} from "react-redux"
 import {getSuperMarkets,changeMarkerSelected} from "../../actions/SuperMarketActions"
 import PropTypes from "prop-types"
+import { Spinner } from 'reactstrap';
 
 
 export class InfoArea extends Component {
@@ -16,9 +17,21 @@ export class InfoArea extends Component {
 			activeTab: '1',
 		}
 	}
-
+	shouldComponentUpdate(nextProps,nextState){
+		console.log(this.props,nextProps)
+		if (nextProps.superMarket.loading!==this.props.superMarket.loading){
+			return true
+		}else if(this.props.superMarket.markerSelected!==nextProps.superMarket.markerSelected&&nextProps.superMarket.markerSelected!==null){
+			return true
+		}else if(this.state.activeTab!==nextState.activeTab){
+			return true
+		}
+			else{return false}
+	}
 	componentDidUpdate(prevProps){
+		console.log("didupdate",prevProps,this.props)
 		if(this.props.superMarket.markerSelected!==prevProps.superMarket.markerSelected&&this.props.superMarket.markerSelected!==null){
+			console.log("marker selected")
 			this.toggle('2')
 			this.setState({
 				markerHighlighted:this.props.superMarket.markerSelected._id})
@@ -102,6 +115,14 @@ export class InfoArea extends Component {
 				<div style={{border:"1px solid black", height:"400px", overflowY: "scroll"}}>
 					{this.props.superMarket.markerSelected!==null?this.focusOnMarker(this.props.superMarket.markerSelected):null}
 				</div>
+	let noneFound =
+				<div style={{border:"1px solid black", height:"400px", overflowY: "scroll"}}>
+					No supermarkets found in this area
+				</div>
+	let spinnerTab = 
+			<div style={{margin:"auto auto", position:"absolute", top:"50%", left:"50%"}}>
+				<Spinner color="primary" />
+			</div>
 	return (
 		<React.Fragment>
 			<div style={{height: '62px'}}>
@@ -127,7 +148,7 @@ export class InfoArea extends Component {
         </Nav>
         <TabContent activeTab={this.state.activeTab}>
           <TabPane tabId="1">
-                {infoall}
+                {this.props.superMarket.loading===false?this.props.superMarket.markers1.length===0?noneFound:infoall:spinnerTab}
           </TabPane>
           <TabPane tabId="2">         
                   {infoFocus}

@@ -19,7 +19,6 @@ export class ItemDisplay extends React.Component {
          }
      }
     shouldComponentUpdate(nextProps,nextState){
-        console.log(nextState,nextProps,"ItemDisplay should component update")
          if(this.state.result!==nextState.result){
              return true
          }

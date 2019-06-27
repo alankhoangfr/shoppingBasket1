@@ -1,18 +1,14 @@
-import React, {Component,Suspense} from 'react';
+import React, {Component} from 'react';
 import { Container, Row,Col } from 'reactstrap';
-import { Spinner } from 'reactstrap';
-const Map = React.lazy(()=> import("./SearchShop/Map"))
-const InfoArea = React.lazy(()=> import("./SearchShop/InfoArea"))
+import InfoArea from "./SearchShop/InfoArea"
+import Map from "./SearchShop/Map"
+
 
 class SearchShop extends Component {
   shopSelectedCompare=(markerObject,event)=>{
 		this.props.shopSelectedCompare(markerObject	)
 	} 
 	render(){
-		let loading =  
-			<div style={{margin:"auto auto", position:"absolute", top:"50%", left:"50%"}}>
-				<Spinner color="primary" />
-			</div>
   		return (
 
 		    <Container>
@@ -24,19 +20,15 @@ class SearchShop extends Component {
 				</div>
 		    	<Row>
 		    		<Col sm={6}>
-		    			<Suspense fallback = {loading} >
-					      	<Map
+					     <Map
 						    height='500px'
-							/>
-						</Suspense> 
+						/>
 					</Col>
 					<Col sm={6}>
-						<Suspense fallback = {loading} >
 						<InfoArea
 							shopSelectedCompare={this.shopSelectedCompare}
 							compareBasket={this.props.compareBasket}
 						/>
-						</Suspense> 
 					</Col>
 				</Row>
 		    </Container>

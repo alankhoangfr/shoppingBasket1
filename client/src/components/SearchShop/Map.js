@@ -34,33 +34,34 @@ export class Map extends Component {
 			bound:null,
 		}
 	}
+
+
 	shouldComponentUpdate( nextProps, nextState ){	
-		console.log("should Componeent update", nextState, this.state,nextProps,this.props)
+		/*console.log("should Componeent update", nextState, this.state,nextProps,this.props)*/
 		if(this.props.overAll.lat===null && nextProps.overAll.lat!==null){
-			console.log("load new lat and long")
+			/*console.log("load new lat and long")*/
 			return true
 		}
 		else if(this.props.superMarket.markers1!==undefined && nextProps.superMarket.markers1!==undefined
 			&&this.check_markers1(this.props.superMarket.markers1,nextProps.superMarket.markers1)===false){
-			console.log("change")
+			/*console.log("change")*/
 			return true		
 		}	
 		else if(nextState.input===true){
-			console.log("change position")
+			/*console.log("change position")*/
 			return true
 		}
 		else if (this.props.superMarket.markers1!==undefined && nextProps.superMarket.markers1!==undefined&&
 			this.check_markers1(this.props.superMarket.markers1,nextProps.superMarket.markers1)===true){
-			console.log("no change")
+			/*console.log("no change")*/
 			return false
 		}	
 		else if(nextProps.loading===true||this.props.loading===true){
-			console.log("loading")
+			/*console.log("loading")*/
 			return false
 		}
 	}
 	componentDidUpdate(prevProps, prevState, snapshot){
-		console.log("componentDidUpdate",prevState,this.state,prevProps,this.props)
 		var action = async()=>{
 			const input = await this.setState({
 				input:false
@@ -93,7 +94,7 @@ export class Map extends Component {
     				return null
     			}
     			 action = async()=>{
-    			 	const updateinfo = await this.props.getSuperMarketsMarkers({"lat":lat,"lng":lng,"bound":[],zoom:15,markers:null})
+    			 	const updateinfo = await this.props.getSuperMarketsMarkers({lat:lat,lng:lng,bound:null,zoom:15,markers:null})
     			 	const state = await this.setState({
 						mapPosition: {
 							lat: lat,
@@ -107,7 +108,7 @@ export class Map extends Component {
 						input:true,
 						moving:false,
 					})	
-	    			this.props.updateInfo({"lat":lat,"lng":lng,"bound":[]})
+	    			this.props.updateInfo({lat:lat,lng:lng,bound:[]})
 
     			}
     			action()
@@ -119,7 +120,7 @@ export class Map extends Component {
 			latValue = place.geometry.location.lat(),
 			lngValue = place.geometry.location.lng();
 			var action = async()=>{
-				const updateinfo = await this.props.getSuperMarketsMarkers({"lat":latValue,"lng":lngValue,"bound":null,zoom:15,markers:null})
+				const updateinfo = await this.props.getSuperMarketsMarkers({lat:latValue,lng:lngValue,bound:null,zoom:15,markers:null})
 				const state = await this.setState({
 						mapPosition: {
 							lat: latValue,
@@ -162,8 +163,8 @@ export class Map extends Component {
 				zoom:this.state.map.getZoom(),
 		})
 			this.props.updateInfo({
-					"lat":this.state.map.getCenter().lat(),"lng":this.state.map.getCenter().lng(),"bound":JSON.stringify(this.state.map.getBounds()),
-					"zoom":this.state.map.getZoom()})
+					lat:this.state.map.getCenter().lat(),lng:this.state.map.getCenter().lng(),bound:JSON.stringify(this.state.map.getBounds()),
+					zoom:this.state.map.getZoom()})
 		}
 		action()
 

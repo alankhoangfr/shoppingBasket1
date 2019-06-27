@@ -16,7 +16,6 @@ export class GenerateData extends React.Component {
          }
      }
     shouldComponentUpdate(nextProps,nextState){
-        console.log(nextProps,this.props,this.state,moment().format(),moment().format("ddd Do MMM YY"))
         if(this.props.superMarket.markers1!==nextProps.superMarket.markers1){
             return true
         }else if(this.state!==nextState){

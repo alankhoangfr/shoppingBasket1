@@ -12,20 +12,32 @@ export const getSuperMarkets = () =>dispatch =>{
 		}))
 }
 export const getSuperMarketsMarkers = (info) =>dispatch =>{
-	const parseBound =JSON.parse(info.bound)
+	let parseBound
+	if(info.bound===null||info.bound===undefined){
+		parseBound=null}
+	else{
+		parseBound =JSON.parse(info.bound)
+	}
+	let markers,markersComplete
+	if(info.markers===null||info.markers===undefined){
+		markers="[]"
+		markersComplete=[]}
+	else{
+		markers =info.markers
+		markersComplete=info.markersComplete
+	}
 	dispatch(setItemsLoading())
-	console.log(info)
 	axios
 		.get("api/superMarkets/latnlong",{
 			params:{
 				lat:info.lat,
 				lng:info.lng,		
 				zoom:info.zoom,
-				markers:info.markers,
-				bound:info.bound}})
+				markers:markers,
+				bound:parseBound}})
 		.then(res=>dispatch({
 			type:GET_SUPERMARKETSMARKERS,
-			payload: [...res.data,...info.markersComplete]
+			payload: [...res.data,...markersComplete]
 		}))
 }
 export const addSuperMarket = (superMarket)=>dispatch =>{

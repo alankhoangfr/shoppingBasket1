@@ -46,7 +46,6 @@ export class FormItem extends React.Component {
 	onSubmit=(event)=>{
 		event.preventDefault()
 		const {result,price}=this.state
-        console.log(result)
 		const newItem = {
 			Code:result.Code,
 			product_name:result["Product Name"],    
