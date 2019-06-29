@@ -6,7 +6,7 @@ import {getSuperMarkets} from "../../actions/SuperMarketActions"
 import {deleteItemFromBasket,addItemToBasket} from "../../actions/OverAllActions"
 import {connect} from "react-redux"
 import PropTypes from "prop-types"
-
+import { Spinner } from 'reactstrap';
 
 export class ItemDisplay extends React.Component {
     constructor(props){
@@ -68,6 +68,7 @@ export class ItemDisplay extends React.Component {
         this.setState({emptySearchBox:false})
     }
     render() {
+
     	const {result,price}=this.state
     	let cardImage = <CardImg top width="100%" src={this.state.result.image} alt="Card image cap"
              		style={{maxWidth:"150px",maxHeight:"150px",margin:"auto"}}/>
@@ -104,8 +105,12 @@ export class ItemDisplay extends React.Component {
     			if (this.state.result===""){
        				card=null
     			}
+        let spinnerTab = 
+            <div style={{margin:"auto auto", position:"absolute", top:"50%", left:"50%"}}>
+                <Spinner color="primary" />
+            </div>
 	return (
-    	<div>
+    	this.props.item.loading===true?spinnerTab:<div>
     		<h1 style={{marginTop:"20px"}}>Search an item</h1>
         	<SearchBoxCompare
             	result = {this.result}
@@ -128,7 +133,8 @@ ItemDisplay.propTypes = {
     addItemToBasket:PropTypes.func.isRequired,
 }
 const mapStateToProps = (state)=>({
-    superMarket:state.superMarket
+    superMarket:state.superMarket,
+    item:state.item
 })
 
 export default connect(mapStateToProps,{getSuperMarkets,deleteItemFromBasket,addItemToBasket}) (ItemDisplay)

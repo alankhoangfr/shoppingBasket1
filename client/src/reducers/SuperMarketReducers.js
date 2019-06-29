@@ -1,5 +1,5 @@
 import uuid from "uuid"
-import {GET_SUPERMARKETS,GET_SUPERMARKETSMARKERS,ADD_SUPERMARKET,DELETE_SUPERMARKET,ADD_ITEMTOSHOP,CHANGE_MARKERSELECTED,ITEMS_LOADING} from '../actions/types';
+import {GET_SUPERMARKETS,GET_SUPERMARKETSMARKERS,ADD_SUPERMARKET,DELETE_SUPERMARKET,ADD_ITEMTOSHOP,CHANGE_MARKERSELECTED,ITEMS_LOADINGSUPERMARKET} from '../actions/types';
 
 const initialState ={
 	loading: false,
@@ -54,7 +54,7 @@ export default function (state=initialState, action) {
 				...state,
 				markerSelected:action.payload
 			}
-		case ITEMS_LOADING:
+		case ITEMS_LOADINGSUPERMARKET:
 			return {
 				...state,
 				loading:true

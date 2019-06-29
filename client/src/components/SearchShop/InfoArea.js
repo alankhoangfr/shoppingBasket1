@@ -18,7 +18,7 @@ export class InfoArea extends Component {
 		}
 	}
 	shouldComponentUpdate(nextProps,nextState){
-		console.log(this.props,nextProps)
+		/*console.log(this.props,nextProps)*/
 		if (nextProps.superMarket.loading!==this.props.superMarket.loading){
 			return true
 		}else if(this.props.superMarket.markerSelected!==nextProps.superMarket.markerSelected&&nextProps.superMarket.markerSelected!==null){
@@ -29,7 +29,7 @@ export class InfoArea extends Component {
 			else{return false}
 	}
 	componentDidUpdate(prevProps){
-		console.log("didupdate",prevProps,this.props)
+		/*console.log("didupdate",prevProps,this.props)*/
 		if(this.props.superMarket.markerSelected!==prevProps.superMarket.markerSelected&&this.props.superMarket.markerSelected!==null){
 			console.log("marker selected")
 			this.toggle('2')
@@ -53,7 +53,7 @@ export class InfoArea extends Component {
 
 	}
 	onClickAdd=(markerObject,event)=>{
-		this.props.shopSelectedCompare(markerObject	)
+		this.props.shopSelectedCompare(markerObject)
 	}
 	markersInBound = (markers)=>{
 		return markers.map((markerObject)=>{

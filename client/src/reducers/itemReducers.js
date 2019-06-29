@@ -1,4 +1,4 @@
-import {GET_ITEMS,FILTER_ITEMS,ITEMS_LOADING} from '../actions/types';
+import {GET_ITEMS,FILTER_ITEMS,ITEMS_LOADINGITEMS} from '../actions/types';
 
 const initialState ={
 	totalItems: [],
@@ -23,7 +23,7 @@ export default function (state=initialState, action) {
 				itemsComparsion:[...action.payload],
 				loading:false,
 			}
-		case ITEMS_LOADING:
+		case ITEMS_LOADINGITEMS:
 			return {
 				...state,
 				loading:true

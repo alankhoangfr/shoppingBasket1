@@ -1,4 +1,4 @@
-import{GET_OVERALL,UPDATE_INFO,ITEMS_LOADING,ADD_ITEMTOBASKET,DELETE_ALLFROMBASKET,REGISTER_SPACE,DELETE_ITEMFROMBASKET} from "./types"
+import{GET_OVERALL,UPDATE_INFO,ITEMS_LOADINGOVERALL,ADD_ITEMTOBASKET,DELETE_ALLFROMBASKET,REGISTER_SPACE,DELETE_ITEMFROMBASKET} from "./types"
 import axios from "axios"
 
 
@@ -54,6 +54,6 @@ export const deleteAllBasket = () =>dispatch =>{
 
 export const setItemsLoading = ()=>{
 	return{
-		type:ITEMS_LOADING
+		type:ITEMS_LOADINGOVERALL
 	}
 }

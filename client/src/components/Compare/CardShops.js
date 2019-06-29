@@ -55,7 +55,6 @@ export class CardShops extends Component{
 		}
 	}
 	shopSelectedCompare=(markerObject)=>{
-		
 		const {space1,space2,space3} = this.props.overAll
 		const basket = this.props.overAll.basket
 		//there are no items registered
@@ -84,14 +83,16 @@ export class CardShops extends Component{
 					}else{
 						var count = 0
 						var notInShop=[]
-						var itemInShop = Object.keys(this.props.superMarket[markerObject._id].item)
+						var ObjectitemInShop = Object.values(this.props.superMarket[markerObject._id].item)
+						var  itemInShop = []
+						ObjectitemInShop.map(item=>itemInShop.push(item.Code))		
 						for(var i =0;i<basket.length;i++){
 							var itemInBasket = basket[i]
 							console.log(itemInBasket)
 							if(itemInShop.indexOf(itemInBasket.Code)>=0)
 								{count++}
 							else if(itemInShop.indexOf(itemInBasket.Code)===-1)
-								{notInShop.push(itemInBasket.title)}
+								{notInShop.push(itemInBasket.description)}
 						}if(count!==basket.length){
 							this.setState({
 								modalAdd:true,
@@ -121,14 +122,17 @@ export class CardShops extends Component{
 					}else{
 						var count = 0
 						var notInShop=[]
-						var itemInShop = Object.keys(this.props.superMarket[markerObject._id].item)
+						var ObjectitemInShop = Object.values(this.props.superMarket[markerObject._id].item)
+						var  itemInShop = []
+						ObjectitemInShop.map(item=>itemInShop.push(item.Code))		
+						console.log(itemInShop)			
 						for(var i =0;i<basket.length;i++){
 							var itemInBasket = basket[i]
 							console.log(itemInBasket)
 							if(itemInShop.indexOf(itemInBasket.Code)>=0)
 								{count++}
 							else if(itemInShop.indexOf(itemInBasket.Code)===-1)
-								{notInShop.push(itemInBasket.title)}
+								{notInShop.push(itemInBasket.description)}
 						}if(count!==basket.length){
 							this.setState({
 								modalAdd:true,
@@ -203,7 +207,7 @@ export class CardShops extends Component{
 	totalBasket = (basket,space)=>{
 		var total = []
 		basket.map((eachItem)=>{
-			const priceOfItem = space.item[eachItem.Code].price
+			const priceOfItem = space.item.filter(itemId =>itemId.Code===eachItem.Code)[0].price
 			const totalPrice = (parseFloat(eachItem.quantity)*parseFloat(priceOfItem)).toFixed(2)	
 			total.push(totalPrice)
 		})
@@ -243,7 +247,7 @@ export class CardShops extends Component{
 			        </thead>
 			        <tbody>
 			        	{this.props.overAll.basket.map((eachItem)=>{
-			        		const priceOfItem = space.item[eachItem.Code].price
+			        		const priceOfItem = space.item.filter(itemId=>itemId.Code===eachItem.Code)[0].price
 			        		const total = (parseFloat(eachItem.quantity)*parseFloat(priceOfItem)).toFixed(2)
 			        		return(
 			        			<tr>

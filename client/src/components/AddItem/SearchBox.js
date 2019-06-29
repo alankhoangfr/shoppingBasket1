@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
-import { Search, Grid, Header, Segment } from 'semantic-ui-react'
+import { Search, Grid, Header, Segment,Image } from 'semantic-ui-react'
 import {getSuperMarkets} from "../../actions/SuperMarketActions"
 import {connect} from "react-redux"
 import PropTypes from "prop-types"
@@ -29,7 +29,7 @@ export class SearchBoxCompare extends Component {
     	}
     }
   handleResultSelect = (e, { result }) => {
-  	this.setState({ value: result.title, emptySearchBox:false })
+  	this.setState({ value: result.description, emptySearchBox:false })
   	this.props.result(result )
   }
   handleSearchChange = (e, { value }) => {
@@ -38,7 +38,7 @@ export class SearchBoxCompare extends Component {
       if (this.state.value.length < 1) return this.setState(initialState)
 
       const re = new RegExp(_.escapeRegExp(this.state.value), 'i')
-      const isMatch = result => re.test(result.title)
+      const isMatch = result => re.test(result.description)
 
       this.setState({
         isLoading: false,
@@ -47,8 +47,22 @@ export class SearchBoxCompare extends Component {
     }, 300)
   }
   render() {
+    const resultRenderer = ({ description,image }) => 
 
-    const { isLoading, value, results } = this.state
+    <Grid>
+       <Grid.Row>
+        <Grid.Column width={10}>
+          {description}
+        </Grid.Column>
+        <Grid.Column width={6}>
+          <Image src={image} size='small' wrapped />
+        </Grid.Column>
+
+       </Grid.Row>
+      
+    </Grid>
+
+     const { isLoading, value, results } = this.state
 
     return (
       <Grid>
@@ -60,6 +74,7 @@ export class SearchBoxCompare extends Component {
               leading: true,
             })}
             results={results}
+            resultRenderer={resultRenderer}
             value={value}
 
           />

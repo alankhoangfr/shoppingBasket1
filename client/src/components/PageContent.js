@@ -33,7 +33,7 @@ class PageContent extends Component {
 			<div>
 				<Switch>
 					<Route exact path="/" component={CompareBasket}/>
-					<Route path="/AddItems" component={AddItem}/>
+					
 				</Switch>
 			</div>
 			);

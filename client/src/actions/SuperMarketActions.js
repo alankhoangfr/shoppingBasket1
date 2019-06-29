@@ -1,5 +1,5 @@
 import{GET_SUPERMARKETS, GET_OVERALL,UPDATE_INFO,GET_SUPERMARKETSMARKERS, ADD_SUPERMARKET, DELETE_SUPERMARKET,ADD_ITEMTOSHOP,
-	CHANGE_MARKERSELECTED,ITEMS_LOADING} from "./types"
+	CHANGE_MARKERSELECTED,ITEMS_LOADINGSUPERMARKET} from "./types"
 import axios from "axios"
 
 export const getSuperMarkets = () =>dispatch =>{
@@ -73,6 +73,6 @@ export const changeMarkerSelected = (supermarket)=>{
 }
 export const setItemsLoading = ()=>{
 	return{
-		type:ITEMS_LOADING
+		type:ITEMS_LOADINGSUPERMARKET
 	}
 }

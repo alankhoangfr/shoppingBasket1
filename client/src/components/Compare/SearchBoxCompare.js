@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import React, { Component } from 'react'
-import { Search, Grid, Header, Segment } from 'semantic-ui-react'
+import { Search, Grid, Header, Segment,Label,Image } from 'semantic-ui-react'
 import {getSuperMarkets} from "../../actions/SuperMarketActions"
 import {filterItems} from "../../actions/ItemsAction"
 import {connect} from "react-redux"
@@ -36,7 +36,7 @@ export class SearchBoxCompare extends Component {
     	}
     }
   handleResultSelect = (e, { result }) => {
-  	this.setState({ value: result.title, emptySearchBox:false })
+  	this.setState({ value: result.product_name, emptySearchBox:false })
   	this.props.result(result )
   }
   handleSearchChange = (e, { value }) => {
@@ -47,7 +47,7 @@ export class SearchBoxCompare extends Component {
       if (this.state.value.length < 1) return this.setState(initialState)
 
       const re = new RegExp(_.escapeRegExp(this.state.value), 'i')
-      const isMatch = result => re.test(result.title)
+      const isMatch = result => re.test(result.product_name)
 
       this.setState({
         isLoading: false,
@@ -56,6 +56,15 @@ export class SearchBoxCompare extends Component {
     }, 300)
   }
   render() {
+    const resultRenderer = ({ product_name,reference }) => 
+
+	  <Grid>
+	     <Grid.Row>
+	      <Grid.Column width={16}>
+	        {reference}
+	      </Grid.Column>
+	     </Grid.Row>
+	  </Grid>
 
     const { isLoading, value, results } = this.state
 
@@ -69,6 +78,7 @@ export class SearchBoxCompare extends Component {
               leading: true,
             })}
             results={results}
+            resultRenderer={resultRenderer}
             value={value}
 
           />

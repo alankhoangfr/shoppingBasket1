@@ -1,5 +1,5 @@
 import uuid from "uuid"
-import {UPDATE_INFO, GET_OVERALL,ITEMS_LOADING,ADD_ITEMTOBASKET,DELETE_ITEMFROMBASKET,REGISTER_SPACE,
+import {UPDATE_INFO, GET_OVERALL,ITEMS_LOADINGOVERALL,ADD_ITEMTOBASKET,DELETE_ITEMFROMBASKET,REGISTER_SPACE,
 	DELETE_ALLFROMBASKET} from '../actions/types';
 
 const initialState ={
@@ -60,7 +60,7 @@ export default function (state=initialState, action) {
 				...state,
 				basket:[]
 			}
-		case ITEMS_LOADING:
+		case ITEMS_LOADINGOVERALL:
 			return {
 				...state,
 				loading:true

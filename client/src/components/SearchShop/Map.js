@@ -188,6 +188,7 @@ export class Map extends Component {
 			})	
 		return {ids:JSON.stringify(result_id),result:result}
 	}
+
 	render() {	
 	const AsyncMap = withScriptjs(
 		withGoogleMap(
@@ -210,8 +211,10 @@ export class Map extends Component {
 						types={['(regions)']}
 						placeholder={"Enter and select location"}
 					/>
-					<MarkerShop
-						markers1={this.props.superMarket.markers1}/>
+
+						<MarkerShop
+							markers1={this.props.superMarket.markers1}/>
+
 				</GoogleMap>
 			)
 		)

@@ -5,6 +5,7 @@ import { Marker,InfoWindow  } from "react-google-maps";
 import {connect} from "react-redux"
 import {changeMarkerSelected} from "../../actions/SuperMarketActions"
 import PropTypes from "prop-types"
+import {MarkerClusterer} from "react-google-maps/lib/components/addons/MarkerClusterer"
 
 export class MarkerShop extends Component {
 	constructor(props){
@@ -33,24 +34,32 @@ export class MarkerShop extends Component {
 		}
 		
 		return icon	
-	}	  		
+	}
+	onMarkerClustererClick = (markerClusterer) => {
+      const clickedMarkers = markerClusterer.getMarkers()
+      console.log(`Current clicked markers length: ${clickedMarkers.length}`)
+      console.log(clickedMarkers)}
+
 	render(){
 		return(
-			this.props.markers1.map((marker) => {				
-			return( 
-				<Marker
-						key={marker._id}
-						position={{ lat: marker.lat, lng: marker.lng }}
-						icon ={this.iconBasket(marker)}
-						onDblClick = {this.onDblClick.bind(this,marker._id)}
-						animation={window.google.maps.Animation.DROP}
-				>
-
-				</Marker>
-			)
-				
-		})
-
+			<MarkerClusterer
+		      onClick={this.onMarkerClustererClick}
+		      averageCenter
+		      enableRetinaIcons
+		      gridSize={60}
+		    >
+				{this.props.markers1.map(marker => (		
+					<Marker
+							key={marker._id}
+							position={{ lat: marker.lat, lng: marker.lng }}
+							icon ={this.iconBasket(marker)}
+							onDblClick = {this.onDblClick.bind(this,marker._id)}
+							animation={window.google.maps.Animation.DROP}
+					>				
+					</Marker>
+									
+				))}
+			</MarkerClusterer>
     	)
 
 	}

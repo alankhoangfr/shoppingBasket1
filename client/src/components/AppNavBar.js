@@ -34,16 +34,7 @@ class AppNavBar extends Component {
 	              <NavItem>
 	                <NavLink tag={RRNavLink} exact to="/" activeClassName="active">Compare Baskets</NavLink>
 	              </NavItem>
-	              <UncontrolledDropdown nav inNavbar>
-	                <DropdownToggle nav caret>
-	                  		Add Information
-	                </DropdownToggle>
-	                <DropdownMenu right>
-	                  <DropdownItem>
-	                    <NavLink tag={RRNavLink} exact to="/AddItems" activeClassName="active">Register a Price</NavLink>
-	                  </DropdownItem>
-	                </DropdownMenu>
-	              </UncontrolledDropdown>
+
 	            </Nav>
 	          </Collapse>
 	        </Navbar>

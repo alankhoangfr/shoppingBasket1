@@ -1,4 +1,4 @@
-import{GET_ITEMS, FILTER_ITEMS, ITEMS_LOADING} from "./types"
+import{GET_ITEMS, FILTER_ITEMS, ITEMS_LOADINGITEMS} from "./types"
 import axios from "axios"
 
 
@@ -27,6 +27,6 @@ export const filterItems = (space) =>dispatch =>{
 
 export const setItemsLoading = ()=>{
 	return{
-		type:ITEMS_LOADING
+		type:ITEMS_LOADINGITEMS
 	}
 }
