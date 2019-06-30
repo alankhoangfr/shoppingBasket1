@@ -76,7 +76,8 @@ router.get("/latnlong",(req,res)=>{
 	const markers = JSON.parse(req.query.markers)
 
     SuperMarket.find({lat:{$gt:coord.downlat,$lt:coord.uplat},lng:{$gt:coord.downlng,$lt:coord.uplng},_id:{$nin:markers}})
-        .then(supermarkets=>res.json(supermarkets))
+        .then(supermarkets=>{
+        	res.json(supermarkets)})
         .catch(err=>res.status(404).json({
             success:false,
             comment:coord

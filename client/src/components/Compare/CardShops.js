@@ -2,7 +2,7 @@
 import React, {Component} from "react"
 import {CardText,Table,CardTitle,CardSubtitle,Card,Container, Row,Col,CardImg,CardBody,Alert, Modal, ModalHeader, ModalBody, ModalFooter,Button } from 'reactstrap';
 import {getSuperMarkets} from "../../actions/SuperMarketActions"
-import {getInfo,deleteItemFromBasket,addItemToBasket,registerSpace} from "../../actions/OverAllActions"
+import {getInfo,deleteItemFromBasket,addItemToBasket,registerSpace,deleteAllBasket} from "../../actions/OverAllActions"
 import {filterItems} from "../../actions/ItemsAction"
 import {connect} from "react-redux"
 import PropTypes from "prop-types"
@@ -72,7 +72,7 @@ export class CardShops extends Component{
 				action()
 				
 			}else if(space2===null&&space3===null){
-				if(space1._id!==markerObject._id){
+				if(space1!==markerObject._id){
 					if(basket.length===0){
 						var action = async()=>{
 							const register = await this.props.registerSpace({space2:markerObject._id})
@@ -110,7 +110,7 @@ export class CardShops extends Component{
 					}
 				}
 			}else if(space3===null){
-				const insideTheSpace = [space1._id,space2._id]
+				const insideTheSpace = [space1,space2]
 				if (insideTheSpace.indexOf(markerObject._id)===-1){
 					if(basket.length===0){
 							var action = async()=>{
@@ -163,6 +163,12 @@ export class CardShops extends Component{
 		const numberOfNon = spaces.filter((s,index)=>
 			spaces_text[index]!==event.target.id && s!==null
 		)
+		var reformedSpace = {}
+		spaces_text.map((s,index)=>{
+			var result = numberOfNon[index]
+			if(numberOfNon[index]===undefined){result=null}
+			reformedSpace[s]=result
+		})
 		var i = 0
 		while(true){
 			if(i>spaces.length-1){
@@ -183,14 +189,14 @@ export class CardShops extends Component{
 				this.setState({[spaces_text[i]]:numberOfNon[i]})
 			}for(var i=numberOfNon.length; i<spaces.length;i++){
 				var action = async()=>{
-					this.props.registerSpace({[spaces_text[i]]:null})
+					this.props.registerSpace(reformedSpace)
 					this.setState({[spaces_text[i]]:null})
 				}
 				action()
 			}
 		}else{
 			var action = async()=>{
-				this.props.registerSpace({[spaces_text[i]]:null})
+				this.props.registerSpace(reformedSpace)
 				this.setState({[spaces_text[i]]:null})
 			}
 			action()
@@ -198,6 +204,7 @@ export class CardShops extends Component{
 		if(numberOfNon.length===0){
 			this.props.allSpace({nonVisible:true,space:numberOfNon})
 			this.props.filterItems([null,null,null])
+			this.props.deleteAllBasket()
 		}else{
 			this.props.allSpace({nonVisible:false,space:numberOfNon})
 			this.props.filterItems([numberOfNon])
@@ -324,6 +331,7 @@ CardShops.propTypes = {
 	registerSpace:PropTypes.func.isRequired,
 	getInfo:PropTypes.func.isRequired,
 	filterItems:PropTypes.func.isRequired,
+	deleteAllBasket:PropTypes.func.isRequired,
 }
 const mapStateToProps = (state)=>({
 	superMarket:state.superMarket,
@@ -331,5 +339,5 @@ const mapStateToProps = (state)=>({
 	item:state.item
 })
 
-export default connect(mapStateToProps,{getInfo,getSuperMarkets,deleteItemFromBasket,addItemToBasket,registerSpace,filterItems}) (CardShops)
+export default connect(mapStateToProps,{getInfo,getSuperMarkets,deleteItemFromBasket,addItemToBasket,registerSpace,filterItems,deleteAllBasket}) (CardShops)
 

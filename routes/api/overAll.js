@@ -98,7 +98,6 @@ router.patch("/deleteItemBasket",(req,res)=>{
 		})
 })
 router.patch("/deleteAll",(req,res)=>{
-	console.log(req.body)
 	Overall.findById(0)
 		.then(info=>{
 			Overall.updateOne({_id:0},{$set:{basket:[]}})

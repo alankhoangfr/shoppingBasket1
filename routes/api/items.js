@@ -17,7 +17,6 @@ router.get("/",(req,res)=>{
 
 })
 router.get("/filterItems",(req,res)=>{
-	console.log(req.query.space)
 	OverAll.findById(0).
 		then(info=>{
 			let result
@@ -30,20 +29,23 @@ router.get("/filterItems",(req,res)=>{
 			space.map((s)=>{
 				SuperMarket.findById(s)
 					.then(infoSupermarket =>{
-						shops[s]=Object.keys(infoSupermarket.item)
+						var tempArray = []
+						var temp = Object.values(infoSupermarket.item)
+						temp.map(item => tempArray.push(item.Code))
+						shops[s]=tempArray
 						if(Object.keys(shops).length===space.length){
 							if (space.length===1){
 								result = shops[info.space1]
 								var resultItems = []
 								result.map((itemid)=>{
-									resultItems.push(infoSupermarket.item[itemid])
+									resultItems.push(infoSupermarket.item.filter(item => item.Code===itemid)[0])
 								})
 								res.json(resultItems)
 							}else if(space.length===2){
 								result = shops[info.space1].filter(x => shops[info.space2].includes(x))
 								var resultItems = []
 								result.map((itemid)=>{
-									resultItems.push(infoSupermarket.item[itemid])
+									resultItems.push(infoSupermarket.item.filter(item => item.Code===itemid)[0])
 								})
 								res.json(resultItems)
 							}else if(space.length ===3){
@@ -51,7 +53,7 @@ router.get("/filterItems",(req,res)=>{
 								result = first.filter(x => shops[info.space3].includes(x))
 								var resultItems = []
 								result.map((itemid)=>{
-									resultItems.push(infoSupermarket.item[itemid])
+									resultItems.push(infoSupermarket.item.filter(item => item.Code===itemid)[0])
 								})
 								res.json(resultItems)
 							}

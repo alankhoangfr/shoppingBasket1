@@ -39,6 +39,7 @@ export default function (state=initialState, action) {
 				zoom:action.payload.zoom===undefined?state.zoom:action.payload.zoom,
 			}
 		case REGISTER_SPACE:
+		console.log(action.payload)
 			return {
 				...state,
 				space1:action.payload.space1===undefined?state.space1:action.payload.space1,

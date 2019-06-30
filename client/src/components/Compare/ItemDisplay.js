@@ -26,7 +26,9 @@ export class ItemDisplay extends React.Component {
 			return true
 		}if(this.props.space!==nextProps.space){
             return true
-        }else{return false}
+        }if(this.props.item.loading!==nextProps.item.loading)
+        {return true}
+        else{return false}
     }
     componentDidUpdate(prevProps){
     	if(prevProps.supermarket_selected!==this.props.supermarket_selected	){
