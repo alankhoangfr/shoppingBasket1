@@ -6,7 +6,6 @@ const initialState ={
 	loading: false,
 	lat:null,
 	lng:null,
-	bound:[],
 	zoom:15,
 	basket:[],
 	space1:null,
@@ -21,7 +20,6 @@ export default function (state=initialState, action) {
 				...state,
 				lat:action.payload.lat,
 				lng:action.payload.lng,
-				bound:action.payload.bound,
 				zoom:action.payload.zoom,
 				basket:action.payload.basket,
 				space1:action.payload.space1,
@@ -31,15 +29,15 @@ export default function (state=initialState, action) {
 
 			}
 		case UPDATE_INFO:
+			console.log(action.payload)
 			return {
 				...state,
 				lat:action.payload.lat===undefined?state.lat:action.payload.lat,
 				lng:action.payload.lng===undefined?state.lng:action.payload.lng,
-				bound:action.payload.bound===undefined?state.bound:action.payload.bound,
 				zoom:action.payload.zoom===undefined?state.zoom:action.payload.zoom,
 			}
 		case REGISTER_SPACE:
-		console.log(action.payload)
+		
 			return {
 				...state,
 				space1:action.payload.space1===undefined?state.space1:action.payload.space1,

@@ -26,19 +26,28 @@ export const getSuperMarketsMarkers = (info) =>dispatch =>{
 		markers =info.markers
 		markersComplete=info.markersComplete
 	}
-	dispatch(setItemsLoading())
-	axios
-		.get("api/superMarkets/latnlong",{
-			params:{
-				lat:info.lat,
-				lng:info.lng,		
-				zoom:info.zoom,
-				markers:markers,
-				bound:parseBound}})
-		.then(res=>dispatch({
+	if (info.zoom>13){
+		dispatch(setItemsLoading())
+		axios
+			.get("api/superMarkets/latnlong",{
+				params:{
+					lat:info.lat,
+					lng:info.lng,		
+					zoom:info.zoom,
+					markers:markers,
+					bound:parseBound}})
+			.then(res=>dispatch({
+				type:GET_SUPERMARKETSMARKERS,
+				payload: [...res.data,...markersComplete]
+			}))
+	}else{
+
+		return{
 			type:GET_SUPERMARKETSMARKERS,
-			payload: [...res.data,...markersComplete]
-		}))
+			payload:[]
+		}
+	}
+
 }
 export const addSuperMarket = (superMarket)=>dispatch =>{
 		axios

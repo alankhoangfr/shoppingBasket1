@@ -38,7 +38,7 @@ export class Map extends Component {
 
 	shouldComponentUpdate( nextProps, nextState ){	
 		/*console.log("should Componeent update", nextState, this.state,nextProps,this.props)*/
-		if(this.props.overAll.lat===null && nextProps.overAll.lat!==null){
+		if(this.state.mapPosition.lat===null && nextState.mapPosition.lat!==null){
 			/*console.log("load new lat and long")*/
 			return true
 		}
@@ -108,7 +108,7 @@ export class Map extends Component {
 						input:true,
 						moving:false,
 					})	
-	    			this.props.updateInfo({lat:lat,lng:lng,bound:[]})
+	    			this.props.updateInfo({lat:lat,lng:lng})
 
     			}
     			action()
@@ -136,7 +136,7 @@ export class Map extends Component {
 					})
 
     				
-				this.props.updateInfo({"lat":latValue,"lng":lngValue,"bound":[]})
+				this.props.updateInfo({"lat":latValue,"lng":lngValue})
     			}
     		action()
 			
@@ -146,26 +146,34 @@ export class Map extends Component {
 	};
 	mapmovedZoom=()=>{
 		var action = async()=>{
-			const find = await this.markersInBound(this.props.superMarket.markers1,JSON.stringify(this.state.map.getBounds()))
-			const updatemarkers = await  this.props.getSuperMarketsMarkers({lat:this.state.map.getCenter().lat(),lng:this.state.map.getCenter().lng(),
-			 	bound:JSON.stringify(this.state.map.getBounds()),zoom:this.state.map.getZoom(),markers:find.ids,markersComplete:find.result})
+			const zoom = await this.state.map.getZoom()
+			const bound =  await this.state.map.getBounds()
+			const lat = await this.state.map.getCenter().lat()
+			const lng = await this.state.map.getCenter().lng()
+			const find = await this.markersInBound(this.props.superMarket.markers1,JSON.stringify(bound))
+			const updatemarkers = await this.props.getSuperMarketsMarkers({lat:lat,lng:lng,
+			 	bound:JSON.stringify(bound),zoom:zoom,markers:find.ids,markersComplete:find.result})
 			const state = await this.setState({
 				bound:JSON.stringify(this.state.map.getBounds()),
 				movePosition: {
-					lat: this.state.map.getCenter().lat(),
-					lng: this.state.map.getCenter().lng()
+					lat: lat,
+					lng: lng
 				},
 				mapPosition: {
-					lat: this.state.map.getCenter().lat(),
-					lng: this.state.map.getCenter().lng()
+					lat: lat,
+					lng: lng
 				},
-				moving:true,
-				zoom:this.state.map.getZoom(),
-		})
-			this.props.updateInfo({
-					lat:this.state.map.getCenter().lat(),lng:this.state.map.getCenter().lng(),bound:JSON.stringify(this.state.map.getBounds()),
-					zoom:this.state.map.getZoom()})
-		}
+				moving:true,	
+				zoom:zoom,
+			})
+			console.log(this.props.overAll.zoom,zoom)
+			if (this.props.overAll.zoom===13 && zoom ===13){}
+			else {
+				console.log("updating the lat lng zoom",zoom)
+				this.props.updateInfo({
+					lat:lat,lng:lng,zoom:zoom})}
+			}
+			
 		action()
 
 	}

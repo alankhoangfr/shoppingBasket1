@@ -14,9 +14,9 @@ class PageContent extends Component {
 		var checkLatLong = (lat,long)=>{
 			if(lat&&long!==null){
 				return null
-			}else {return this.props.updateInfo({"lat": 51.509865, "lng": -0.118092,"bound":[]})}
+			}else {return this.props.updateInfo({"lat": 51.509865, "lng": -0.118092})}
 		}
-		const resetSpace = await this.props.updateInfo({"space1": null, "space2": null,"space3":null,basket:[]})
+		const resetSpace = await this.props.updateInfo({"space1": null, "space2": null,"space3":null,basket:[],"zoom":15})
 		const getinfo = await this.props.getInfo()
 		const updateinfo = await checkLatLong(this.props.overAll.lat,this.props.overAll.lng)
 		this.props.getSuperMarketsMarkers({

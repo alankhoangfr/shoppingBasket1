@@ -21,7 +21,10 @@ export class InfoArea extends Component {
 		/*console.log(this.props,nextProps)*/
 		if (nextProps.superMarket.loading!==this.props.superMarket.loading){
 			return true
-		}else if(this.props.superMarket.markerSelected!==nextProps.superMarket.markerSelected&&nextProps.superMarket.markerSelected!==null){
+		}else if (nextProps.overAll.zoom!==this.props.overAll.zoom){
+			return true
+		}
+		else if(this.props.superMarket.markerSelected!==nextProps.superMarket.markerSelected&&nextProps.superMarket.markerSelected!==null){
 			return true
 		}else if(this.state.activeTab!==nextState.activeTab){
 			return true
@@ -31,7 +34,6 @@ export class InfoArea extends Component {
 	componentDidUpdate(prevProps){
 		/*console.log("didupdate",prevProps,this.props)*/
 		if(this.props.superMarket.markerSelected!==prevProps.superMarket.markerSelected&&this.props.superMarket.markerSelected!==null){
-			console.log("marker selected")
 			this.toggle('2')
 			this.setState({
 				markerHighlighted:this.props.superMarket.markerSelected._id})
@@ -123,6 +125,23 @@ export class InfoArea extends Component {
 			<div style={{margin:"auto auto", position:"absolute", top:"50%", left:"50%"}}>
 				<Spinner color="primary" />
 			</div>
+
+	let zoomIn = 
+		<div style={{border:"1px solid black", height:"400px", overflowY: "scroll"}}>
+			Zoom in to get a list of more stores
+		</div>
+	var infoFrame= () =>{
+		if(this.props.overAll.zoom===13){
+				console.log("zoom in")
+				return zoomIn
+		}else{
+			if(this.props.superMarket.loading===false){		
+				return this.props.superMarket.markers1.length===0?noneFound:infoall		
+			}else{return spinnerTab}
+		}
+		
+	} 
+		
 	return (
 		<React.Fragment>
 			<div style={{height: '62px'}}>
@@ -148,7 +167,7 @@ export class InfoArea extends Component {
         </Nav>
         <TabContent activeTab={this.state.activeTab}>
           <TabPane tabId="1">
-                {this.props.superMarket.loading===false?this.props.superMarket.markers1.length===0?noneFound:infoall:spinnerTab}
+                {infoFrame()}
           </TabPane>
           <TabPane tabId="2">         
                   {infoFocus}
@@ -169,7 +188,8 @@ InfoArea.propTypes = {
 }
 
 const mapStateToProps = (state)=>({
-	superMarket:state.superMarket
+	superMarket:state.superMarket,
+	overAll:state.overAll,
 })
 
 export default connect(mapStateToProps,{getSuperMarkets,changeMarkerSelected})(InfoArea)

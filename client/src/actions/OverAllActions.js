@@ -12,12 +12,19 @@ export const getInfo = () =>dispatch =>{
 		}))
 }
 export const updateInfo = (latnlong) =>dispatch =>{
-	axios
+	if (latnlong.zoom>=13){
+		axios
 		.patch("api/overall/0",latnlong)
 		.then(res=>dispatch({
 			type:UPDATE_INFO,
-			payload: res.data
+			payload: latnlong
 		}))
+	}else {
+		return {
+			type:UPDATE_INFO,
+			payload: []
+		}
+	}
 }
 export const registerSpace = (space) =>dispatch =>{
 	const newSpace = space

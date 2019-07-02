@@ -12,9 +12,6 @@ const OverallSchema = new Schema({
 		type:Number,
 		required:true
 	},
-	bound:{
-		type:Array,
-	},
 	zoom:{
 		type:Number,
 	},
