@@ -184,14 +184,12 @@ export class CardShops extends Component{
 			}for(var i=numberOfNon.length; i<spaces.length;i++){
 				var action =async()=>{
 					this.props.registerSpace({"storeId":reformedSpaceId,"storeObject":reformedSpace})
-					this.setState({[spaces_text[i]]:null})
 				}
 				action()
 			}
 		}else{
 			var action =async()=>{
 				this.props.registerSpace({"storeId":reformedSpaceId,"storeObject":reformedSpace})
-				this.setState({[spaces_text[i]]:null})
 			}
 			action()
 		}
@@ -245,6 +243,7 @@ export class CardShops extends Component{
 			        </thead>
 			        <tbody>
 			        	{this.props.overAll.basket.map((eachItem)=>{
+			        		console.log(space,eachItem)
 			        		const priceOfItem = space.item.filter(itemId=>itemId.Code===eachItem.Code)[0].price
 			        		const total = (parseFloat(eachItem.quantity)*parseFloat(priceOfItem)).toFixed(2)
 			        		return(

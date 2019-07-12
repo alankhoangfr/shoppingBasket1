@@ -66,13 +66,11 @@ router.patch("/space",(req,res)=>{
 		if(info.basket.length===0){
 			res.json([])
 		}else{
-			info.basket.map(Code=>{
-			All_Item.find({shopId:Object.values(req.body)[0],Code:Code}).then(itemInfo=>{
+			All_Item.find({shopId:Object.values(req.body)[0],Code:{$in:info.basket}}).then(itemInfo=>{
 				res.json(itemInfo)
-				})
 			})
 		}
-	}))	
+	}))
 	.catch(err=>res.status(404).json({
 		success: false,
 		message:err
