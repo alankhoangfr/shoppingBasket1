@@ -9,6 +9,7 @@ import {getSuperMarkets,getSuperMarketsMarkers} from "../actions/SuperMarketActi
 import {getInfo,updateInfo} from "../actions/OverAllActions"
 import {connect} from "react-redux"
 import PropTypes from "prop-types"
+import LoadingOverlay from 'react-loading-overlay'
 
 export class CompareBasket extends Component{
 	constructor(props){
@@ -47,29 +48,36 @@ export class CompareBasket extends Component{
 					itemOnDrag={this.itemOnDrag}
 					space={this.state.space}
 				/>
-			</div>
+			</div>      
 		if(this.state.allSpace===true){shopSelected=null}
 		return (
+			
 			<React.Fragment>
-				<SearchShop
-					fromAddItem = {true}
-					compareBasket={true}
-					shopSelectedCompare={this.shopSelectedCompare}
-					/>
-				
-				<Container style={{marginTop:"50px"}}>
-					<Row>
-						<Col sm={3}  style={{zIndex:"1"}}>
-							<Basket
-								itemOnDrag={this.state.itemOnDrag}/>
-							{shopSelected}
-						</Col>		
-					<CardShops
-						shopSelectedCompare={this.state.shopSelectedCompare}
-						allSpace={this.allSpace}
-						cancelCardSpace={this.cancelCardSpace}/>
-					</Row>
-				</Container>
+				<LoadingOverlay
+			  	active={this.props.item.loading}
+				spinner
+				text='Loading your content...'
+				>		
+					<SearchShop
+						fromAddItem = {true}
+						compareBasket={true}
+						shopSelectedCompare={this.shopSelectedCompare}
+						/>
+					
+					<Container style={{marginTop:"50px"}}>
+						<Row>
+							<Col sm={3}  style={{zIndex:"1"}}>
+								<Basket
+									itemOnDrag={this.state.itemOnDrag}/>
+								{shopSelected}
+							</Col>		
+						<CardShops
+							shopSelectedCompare={this.state.shopSelectedCompare}
+							allSpace={this.allSpace}
+							cancelCardSpace={this.cancelCardSpace}/>
+						</Row>
+					</Container>
+				</LoadingOverlay>
 			</React.Fragment>
 			)
 	}
@@ -86,7 +94,8 @@ CompareBasket.propTypes = {
 }
 const mapStateToProps = (state)=>({
 	superMarket:state.superMarket,
-	overAll:state.overAll
+	overAll:state.overAll,
+	item:state.item,
 })
 
 export default connect(mapStateToProps,{getSuperMarkets,getSuperMarketsMarkers,getInfo,updateInfo}) (CompareBasket)
