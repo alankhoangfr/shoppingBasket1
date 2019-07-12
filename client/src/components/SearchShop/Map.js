@@ -166,10 +166,10 @@ export class Map extends Component {
 				moving:true,	
 				zoom:zoom,
 			})
-			console.log(this.props.overAll.zoom,zoom)
+			/*console.log(this.props.overAll.zoom,zoom)*/
 			if (this.props.overAll.zoom===12 && zoom ===12){}
 			else {
-				console.log("updating the lat lng zoom",zoom)
+				/*console.log("updating the lat lng zoom",zoom)*/
 				this.props.updateInfo({
 					lat:lat,lng:lng,zoom:zoom})}
 			}

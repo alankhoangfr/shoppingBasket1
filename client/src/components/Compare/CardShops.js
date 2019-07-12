@@ -17,7 +17,7 @@ export class CardShops extends Component{
 		}
 	}
 	shouldComponenntUpdate(nextProps,nextState){
-		console.log("cardshop",nextProps,this.props,nextState,this.state)
+		/*console.log("cardshop",nextProps,this.props,nextState,this.state)*/
 		const {space1,space2,space3} = this.props.overAll
 		const spaces =[space1,space2,space3]
 		const nspaces =[nextProps.overAll.space1,nextProps.overAll.space2,nextProps.overAll.space3]
@@ -78,7 +78,6 @@ export class CardShops extends Component{
 					action()
 				}else{
 					var makeSure = (condition)=>{
-						console.log(condition)
 						if(condition===false){
 							 setTimeout(makeSure, 2000)
 						}
@@ -163,7 +162,7 @@ export class CardShops extends Component{
 			space3:reformedSpace["space3"]===null?null:reformedSpace["space3"].StoreId
 		}
 		
-		console.log(reformedSpace,reformedSpaceId)
+		/*console.log(reformedSpace,reformedSpaceId)*/
 		var i = 0
 		while(true){
 			if(i>spaces.length-1){

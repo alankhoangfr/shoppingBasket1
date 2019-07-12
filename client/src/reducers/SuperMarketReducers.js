@@ -52,11 +52,9 @@ export default function (state=initialState, action) {
 				loading:true
 			}
 		case UPDATE_ICONMARKER:
-			console.log(action.payload)
 			var iconMark = state.markers1.filter(mark=>
 				action.payload.includes(mark._id)
 			)
-			console.log(iconMark)
 			return{
 				...state,
 				iconMarkers:iconMark
