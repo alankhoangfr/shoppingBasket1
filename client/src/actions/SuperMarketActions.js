@@ -1,5 +1,5 @@
 import{GET_SUPERMARKETS, GET_OVERALL,UPDATE_INFO,GET_SUPERMARKETSMARKERS, ADD_SUPERMARKET, DELETE_SUPERMARKET,ADD_ITEMTOSHOP,
-	CHANGE_MARKERSELECTED,ITEMS_LOADINGSUPERMARKET} from "./types"
+	CHANGE_MARKERSELECTED,ITEMS_LOADINGSUPERMARKET,UPDATE_ICONMARKER} from "./types"
 import axios from "axios"
 
 export const getSuperMarkets = () =>dispatch =>{
@@ -26,7 +26,7 @@ export const getSuperMarketsMarkers = (info) =>dispatch =>{
 		markers =info.markers
 		markersComplete=info.markersComplete
 	}
-	if (info.zoom>13){
+	if (info.zoom>12){
 		dispatch(setItemsLoading())
 		axios
 			.get("api/superMarkets/latnlong",{
@@ -78,6 +78,12 @@ export const changeMarkerSelected = (supermarket)=>{
 	return{
 		type:CHANGE_MARKERSELECTED,
 		payload:supermarket
+	}
+}
+export const updateInfoArea = (supermarkets)=>{
+	return{
+		type:UPDATE_ICONMARKER,
+		payload:supermarkets
 	}
 }
 export const setItemsLoading = ()=>{

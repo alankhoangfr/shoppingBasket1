@@ -6,7 +6,7 @@ const path = require('path');
 const superMarkets = require("./routes/api/superMarkets")
 const overAll = require("./routes/api/overAll")
 const items = require("./routes/api/items")
-
+const All_Item = require("./routes/api/all_item")
 const app = express()
 
 //Bodyparser Middleware
@@ -28,6 +28,7 @@ mongoose
 app.use("/api/superMarkets",superMarkets)
 app.use("/api/overall",overAll)
 app.use("/api/items",items)
+app.use("/api/all_item",All_Item)
 
 if (process.env.NODE_ENV === 'production') {
   // Set static folder

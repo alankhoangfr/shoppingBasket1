@@ -2,7 +2,7 @@
 import React, {Component} from "react"
 import {CardText,Table,CardTitle,CardSubtitle,Card,Container, Row,Col,CardImg,CardBody,Alert, Modal, ModalHeader, ModalBody, ModalFooter,Button } from 'reactstrap';
 import {getSuperMarkets} from "../../actions/SuperMarketActions"
-import {getInfo,deleteItemFromBasket,addItemToBasket,registerSpace,deleteAllBasket} from "../../actions/OverAllActions"
+import {getInfo,deleteItemFromBasket,addItemToBasket,registerSpace,deleteAllBasket,checkSpace} from "../../actions/OverAllActions"
 import {filterItems} from "../../actions/ItemsAction"
 import {connect} from "react-redux"
 import PropTypes from "prop-types"
@@ -12,13 +12,8 @@ export class CardShops extends Component{
 	constructor(props){
 		super(props)
 		this.state={
-			space1:null,
-			space2:null,
-			space3:null,
 			modal: false,
 			modalAdd:false,
-			modalAddItem:false,
-			notInShop:[],
 		}
 	}
 	shouldComponenntUpdate(nextProps,nextState){
@@ -31,6 +26,10 @@ export class CardShops extends Component{
 		}else if(nspaces!==spaces){
 			return true
 		}else if(this.props.overAll.basket!==nextProps.superMarket.basket){
+			return true
+		}else if(this.props.overAll.addToSpace!==nextProps.overAll.addToSpace
+			||this.props.overAll.itemsInShop!==nextProps.overAll.itemsInShop
+			||this.props.overAll.notInShop!==nextProps.overAll.notInShop){
 			return true
 		}
 	}
@@ -54,113 +53,102 @@ export class CardShops extends Component{
 			this.shopSelectedCompare(this.props.shopSelectedCompare)
 		}
 	}
+
 	shopSelectedCompare=(markerObject)=>{
 		const {space1,space2,space3} = this.props.overAll
 		const basket = this.props.overAll.basket
-		//there are no items registered
-		if(this.props.superMarket[markerObject._id].item===undefined){
-			this.setState({modalAddItem:true})
-			this.props.cancelCardSpace()
-		}else{
-			if (space1===null&&space2===null&&space3===null){
-				//first space taken
-				var action = async()=>{
-					const register = await this.props.registerSpace({space1:markerObject._id})
-					const filter = await this.props.filterItems([markerObject._id,null,null])
-					this.setState({space1:this.props.superMarket[markerObject._id]})
+		this.props.checkSpace(markerObject.StoreId)
+		if (space1===null&&space2===null&&space3===null){
+			//first space taken
+			var action =async()=>{
+				const register = await this.props.registerSpace(
+					{"storeId":{space1:markerObject.StoreId},"storeObject":{space1:markerObject}})
+				const filter = await this.props.filterItems([markerObject.StoreId,null,null])
+			}
+			action()
+			
+		}else if(space2===null&&space3===null){
+			if(space1._id!==markerObject._id){
+				if(basket.length===0){
+					var action =async()=>{
+						const register = await this.props.registerSpace(
+							{"storeId":{space2:markerObject.StoreId},"storeObject":{space2:markerObject}})
+						const filter = await this.props.filterItems([this.props.overAll.space1.StoreId,markerObject.StoreId,null])
+					}
+					action()
+				}else{
+					var makeSure = (condition)=>{
+						console.log(condition)
+						if(condition===false){
+							 setTimeout(makeSure, 2000)
+						}
+						else{
+							if(this.props.overAll.addToSpace===false){
+								this.setState({modalAdd:true,})
+								this.props.cancelCardSpace()
+							}else if(this.props.overAll.addToSpace===true){
+								var action =async()=>{
+								const register = await this.props.registerSpace(
+									{"storeId":{space2:markerObject.StoreId},"storeObject":{space2:markerObject}})
+								const filter = await this.props.filterItems([this.props.overAll.space1.StoreId,markerObject.StoreId,null])
+								}
+								action()
+							}
+						}
+						
+					}
+					makeSure(this.props.overAll.loadingCheck)
+
 				}
-				action()
-				
-			}else if(space2===null&&space3===null){
-				if(space1!==markerObject._id){
-					if(basket.length===0){
-						var action = async()=>{
-							const register = await this.props.registerSpace({space2:markerObject._id})
-							const filter = await this.props.filterItems([this.props.overAll.space1,markerObject._id,null])
-							this.setState({space2:this.props.superMarket[markerObject._id]})
+			}
+		}else if(space3===null){
+			const insideTheSpace = [space1._id,space2._id]
+			if (insideTheSpace.indexOf(markerObject._id)===-1){
+				if(basket.length===0){
+						var action =async()=>{
+							const register = await this.props.registerSpace(
+								{"storeId":{space3:markerObject.StoreId},"storeObject":{space3:markerObject}})
+							const filter = await this.props.filterItems([this.props.overAll.space1.StoreId,this.props.overAll.space2.StoreId,markerObject.StoreId])
 						}
 						action()
-					}else{
-						var count = 0
-						var notInShop=[]
-						var ObjectitemInShop = Object.values(this.props.superMarket[markerObject._id].item)
-						var  itemInShop = []
-						ObjectitemInShop.map(item=>itemInShop.push(item.Code))		
-						for(var i =0;i<basket.length;i++){
-							var itemInBasket = basket[i]
-							console.log(itemInBasket)
-							if(itemInShop.indexOf(itemInBasket.Code)>=0)
-								{count++}
-							else if(itemInShop.indexOf(itemInBasket.Code)===-1)
-								{notInShop.push(itemInBasket.description)}
-						}if(count!==basket.length){
-							this.setState({
-								modalAdd:true,
-								notInShop:notInShop,
-								})
-							this.props.cancelCardSpace()
-						}else{
-							var action = async()=>{
-								const register = await this.props.registerSpace({space2:markerObject._id})
-								const filter = await this.props.filterItems([this.props.overAll.space1,markerObject._id,null])
-								this.setState({space2:this.props.superMarket[markerObject._id]})
+				}else{
+					
+					var makeSure = (condition)=>{
+						if(condition===false){
+							 setTimeout(makeSure, 2000)
+						}
+						else{
+							if(this.props.overAll.addToSpace===false){
+								this.setState({modalAdd:true})		
+								this.props.cancelCardSpace()
+							}else if(this.props.overAll.addToSpace===true){
+								var action =async()=>{
+								const register = await this.props.registerSpace(
+									{"storeId":{space3:markerObject.StoreId},"storeObject":{space3:markerObject}})
+								const filter = await this.props.filterItems([this.props.overAll.space1.StoreId,this.props.overAll.space2.StoreId,markerObject.StoreId])
 							}
 							action()
-						}
+							}
+						}	
 					}
+					makeSure(this.props.overAll.loadingCheck)
 				}
-			}else if(space3===null){
-				const insideTheSpace = [space1,space2]
-				if (insideTheSpace.indexOf(markerObject._id)===-1){
-					if(basket.length===0){
-							var action = async()=>{
-								const register = await this.props.registerSpace({space3:markerObject._id})
-								const filter = await this.props.filterItems([this.props.overAll.space1,this.props.overAll.space2,markerObject._id])
-								this.setState({space3:this.props.superMarket[markerObject._id]})
-							}
-							action()
-					}else{
-						var count = 0
-						var notInShop=[]
-						var ObjectitemInShop = Object.values(this.props.superMarket[markerObject._id].item)
-						var  itemInShop = []
-						ObjectitemInShop.map(item=>itemInShop.push(item.Code))		
-						console.log(itemInShop)			
-						for(var i =0;i<basket.length;i++){
-							var itemInBasket = basket[i]
-							console.log(itemInBasket)
-							if(itemInShop.indexOf(itemInBasket.Code)>=0)
-								{count++}
-							else if(itemInShop.indexOf(itemInBasket.Code)===-1)
-								{notInShop.push(itemInBasket.description)}
-						}if(count!==basket.length){
-							this.setState({
-								modalAdd:true,
-								notInShop:notInShop,
-								})
-							this.props.cancelCardSpace()
-						}else{
-							var action = async()=>{
-								const register = await this.props.registerSpace({space3:markerObject._id})
-								const filter = await this.props.filterItems([this.props.overAll.space1,this.props.overAll.space2,markerObject._id])
-								this.setState({space3:this.props.superMarket[markerObject._id]})
-							}
-							action()
-						}
-					}
-				}		
-			}else{
-				this.setState({modal:true})
-				this.props.cancelCardSpace()
-			}
+			}		
+		}else{
+			this.setState({modal:true})
+			this.props.cancelCardSpace()
 		}
 
 	}
 	cancel=(event)=>{
 		const {space1,space2,space3} = this.props.overAll
 		const spaces =[space1,space2,space3]
+		const spacesId =[space1===null?null:space1.StoreId,space2===null?null:space2.StoreId,space3===null?null:space2.StoreId]
 		const spaces_text = ["space1","space2","space3"]
 		const numberOfNon = spaces.filter((s,index)=>
+			spaces_text[index]!==event.target.id && s!==null
+		)
+		const numberOfNonID=spacesId.filter((s,index)=>
 			spaces_text[index]!==event.target.id && s!==null
 		)
 		var reformedSpace = {}
@@ -169,6 +157,13 @@ export class CardShops extends Component{
 			if(numberOfNon[index]===undefined){result=null}
 			reformedSpace[s]=result
 		})
+		const reformedSpaceId = {
+			space1:reformedSpace["space1"]===null?null:reformedSpace["space1"].StoreId,
+			space2:reformedSpace["space2"]===null?null:reformedSpace["space2"].StoreId,
+			space3:reformedSpace["space3"]===null?null:reformedSpace["space3"].StoreId
+		}
+		
+		console.log(reformedSpace,reformedSpaceId)
 		var i = 0
 		while(true){
 			if(i>spaces.length-1){
@@ -188,15 +183,15 @@ export class CardShops extends Component{
 			for(var i=0; i<numberOfNon.length;i++){
 				this.setState({[spaces_text[i]]:numberOfNon[i]})
 			}for(var i=numberOfNon.length; i<spaces.length;i++){
-				var action = async()=>{
-					this.props.registerSpace(reformedSpace)
+				var action =async()=>{
+					this.props.registerSpace({"storeId":reformedSpaceId,"storeObject":reformedSpace})
 					this.setState({[spaces_text[i]]:null})
 				}
 				action()
 			}
 		}else{
-			var action = async()=>{
-				this.props.registerSpace(reformedSpace)
+			var action =async()=>{
+				this.props.registerSpace({"storeId":reformedSpaceId,"storeObject":reformedSpace})
 				this.setState({[spaces_text[i]]:null})
 			}
 			action()
@@ -207,7 +202,7 @@ export class CardShops extends Component{
 			this.props.deleteAllBasket()
 		}else{
 			this.props.allSpace({nonVisible:false,space:numberOfNon})
-			this.props.filterItems([numberOfNon])
+			this.props.filterItems(numberOfNonID)
 		}
 		this.props.cancelCardSpace()
 	}
@@ -226,9 +221,6 @@ export class CardShops extends Component{
  	}
  	toggleAdd=()=> {
     this.setState({ modalAdd: false });
- 	}
- 	toggleAddItem=()=> {
-    this.setState({ modalAddItem: false });
  	}
  	cancelItem=(eachItem)=>{
  		this.props.deleteItemFromBasket(eachItem)
@@ -260,7 +252,7 @@ export class CardShops extends Component{
 			        			<tr>
 			        				<img src={cancel} align="right" width="8px" onClick={this.cancelItem.bind(this,eachItem)} id={id}/>
 			        				<td style={{fontSize:"x-small", padding:"4px"}}>{eachItem.quantity}</td>
-			        				<td style={{fontSize:"x-small", padding:"4px"}}>{eachItem["product_name"]}</td>
+			        				<td style={{fontSize:"x-small", padding:"4px"}}>{eachItem["description"]}</td>
 			        				<td style={{fontSize:"x-small", padding:"3px"}}>$ {priceOfItem}</td>
 			        				<td style={{fontSize:"x-small", padding:"3px"}}>$ {total}</td>
 			        			</tr>
@@ -282,18 +274,15 @@ export class CardShops extends Component{
 			</Card>
 		return(
 			<React.Fragment>
-				<Modal isOpen={this.state.modalAddItem} toggle={this.toggleAddItem} className={this.props.className}>
-          			<ModalHeader toggle={this.toggleAddItem}>You must add/generate items to the shop</ModalHeader>
-        		</Modal>
 				<Modal isOpen={this.state.modalAdd} toggle={this.toggleAdd} className={this.props.className}>
           			<ModalHeader toggle={this.toggleAdd}>You must remove the following items</ModalHeader>
           			<ModalBody>
             				<Table borderless hover responsive>
 				          		<tbody>
-				          			{this.state.notInShop.map((item)=>{
+				          			{this.props.overAll.notInShop.map((item)=>{
 				          				return(
 					          				<tr>
-				        						<td>{item}</td>
+				        						<td>{this.props.overAll.basket.filter(itemInBasket=>itemInBasket.Code==item)[0]["description"]}</td>
 				        					</tr>
 			        					)
 				          			})}
@@ -310,13 +299,13 @@ export class CardShops extends Component{
           			</ModalFooter>
         		</Modal>
 				<Col sm={3}>
-					{this.props.overAll.space1!==null?cardComparsion(this.props.superMarket[this.props.overAll.space1],"space1"):cardNoShop}
+					{this.props.overAll.space1!==null?cardComparsion(this.props.overAll.space1,"space1"):cardNoShop}
 				</Col>
 				<Col sm={3}>
-					{this.props.overAll.space2!==null?cardComparsion(this.props.superMarket[this.props.overAll.space2],"space2"):cardNoShop}
+					{this.props.overAll.space2!==null?cardComparsion(this.props.overAll.space2,"space2"):cardNoShop}
 				</Col>
 				<Col sm={3}>
-					{this.props.overAll.space3!==null?cardComparsion(this.props.superMarket[this.props.overAll.space3],"space3"):cardNoShop}
+					{this.props.overAll.space3!==null?cardComparsion(this.props.overAll.space3,"space3"):cardNoShop}
 				</Col>
 			</React.Fragment>	
 			)
@@ -332,6 +321,7 @@ CardShops.propTypes = {
 	getInfo:PropTypes.func.isRequired,
 	filterItems:PropTypes.func.isRequired,
 	deleteAllBasket:PropTypes.func.isRequired,
+	checkSpace:PropTypes.func.isRequired,
 }
 const mapStateToProps = (state)=>({
 	superMarket:state.superMarket,
@@ -339,5 +329,5 @@ const mapStateToProps = (state)=>({
 	item:state.item
 })
 
-export default connect(mapStateToProps,{getInfo,getSuperMarkets,deleteItemFromBasket,addItemToBasket,registerSpace,filterItems,deleteAllBasket}) (CardShops)
+export default connect(mapStateToProps,{getInfo,getSuperMarkets,deleteItemFromBasket,addItemToBasket,registerSpace,filterItems,deleteAllBasket,checkSpace}) (CardShops)
 

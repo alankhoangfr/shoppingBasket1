@@ -167,7 +167,7 @@ export class Map extends Component {
 				zoom:zoom,
 			})
 			console.log(this.props.overAll.zoom,zoom)
-			if (this.props.overAll.zoom===13 && zoom ===13){}
+			if (this.props.overAll.zoom===12 && zoom ===12){}
 			else {
 				console.log("updating the lat lng zoom",zoom)
 				this.props.updateInfo({
@@ -220,8 +220,7 @@ export class Map extends Component {
 						placeholder={"Enter and select location"}
 					/>
 
-						<MarkerShop
-							markers1={this.props.superMarket.markers1}/>
+						<MarkerShop	/>
 
 				</GoogleMap>
 			)

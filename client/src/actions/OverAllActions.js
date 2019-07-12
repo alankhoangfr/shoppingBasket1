@@ -1,4 +1,5 @@
-import{GET_OVERALL,UPDATE_INFO,ITEMS_LOADINGOVERALL,ADD_ITEMTOBASKET,DELETE_ALLFROMBASKET,REGISTER_SPACE,DELETE_ITEMFROMBASKET} from "./types"
+import{GET_OVERALL,UPDATE_INFO,ITEMS_LOADINGOVERALL,ADD_ITEMTOBASKET,
+	DELETE_ALLFROMBASKET,REGISTER_SPACE,DELETE_ITEMFROMBASKET,CHECK_SHOP,ITEMS_LOADINGOVERALLCHECK} from "./types"
 import axios from "axios"
 
 
@@ -12,7 +13,7 @@ export const getInfo = () =>dispatch =>{
 		}))
 }
 export const updateInfo = (latnlong) =>dispatch =>{
-	if (latnlong.zoom>=13){
+	if (latnlong.zoom>=12){
 		axios
 		.patch("api/overall/0",latnlong)
 		.then(res=>dispatch({
@@ -27,12 +28,22 @@ export const updateInfo = (latnlong) =>dispatch =>{
 	}
 }
 export const registerSpace = (space) =>dispatch =>{
-	const newSpace = space
 	axios
-		.patch("api/overall/space",space)
+		.patch("api/overall/space",space.storeId)
 		.then(res=>dispatch({
 			type:REGISTER_SPACE,
-			payload:space
+			payload:{"spaceInfo":space.storeObject,"itemsInShop":res.data}
+		}))
+}
+export const checkSpace = (info) =>dispatch =>{
+	dispatch(setItemsLoadingChecking())
+	axios
+		.get("api/overall/check",{
+				params:{
+					shopId:info}})
+		.then(res=>dispatch({
+			type:CHECK_SHOP,
+			payload:res.data
 		}))
 }
 export const addItemToBasket = (item) =>dispatch =>{
@@ -40,7 +51,7 @@ export const addItemToBasket = (item) =>dispatch =>{
 		.patch("api/overall/basket",item)
 		.then(res=>dispatch({
 			type:ADD_ITEMTOBASKET,
-			payload:item
+			payload:{"infoLoad":res.data,"infoItem":item}
 		}))
 }
 export const deleteItemFromBasket = (item) =>dispatch =>{
@@ -62,5 +73,11 @@ export const deleteAllBasket = () =>dispatch =>{
 export const setItemsLoading = ()=>{
 	return{
 		type:ITEMS_LOADINGOVERALL
+	}
+}
+
+export const setItemsLoadingChecking = ()=>{
+	return{
+		type:ITEMS_LOADINGOVERALLCHECK
 	}
 }

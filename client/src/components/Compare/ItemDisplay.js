@@ -84,12 +84,10 @@ export class ItemDisplay extends React.Component {
          let card = 
             <Card style={{marginTop:"20px"}} draggable={true} onDragStart={this.onStartDrag}>
                 <CardBody className="text-center">
-                    <CardTitle>{this.state.result["product_name"]}</CardTitle>
-                    <CardSubtitle>{this.state.result["Ingredients Text"]}</CardSubtitle>        
+                    <CardTitle>{this.state.result["description"]}</CardTitle> 
                 </CardBody>
                    {cardImage}
                 <CardBody>
-                    <CardText>Some quick example text to build on the card title and make up the bulk of the card's content.</CardText>
                     <Form onSubmit={this.onSubmit}>
                         <FormGroup row className="text-center">
                             <Col sm={10}>

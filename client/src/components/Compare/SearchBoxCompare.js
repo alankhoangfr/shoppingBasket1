@@ -36,7 +36,7 @@ export class SearchBoxCompare extends Component {
     	}
     }
   handleResultSelect = (e, { result }) => {
-  	this.setState({ value: result.product_name, emptySearchBox:false })
+  	this.setState({ value: result.description, emptySearchBox:false })
   	this.props.result(result )
   }
   handleSearchChange = (e, { value }) => {
@@ -47,7 +47,7 @@ export class SearchBoxCompare extends Component {
       if (this.state.value.length < 1) return this.setState(initialState)
 
       const re = new RegExp(_.escapeRegExp(this.state.value), 'i')
-      const isMatch = result => re.test(result.product_name)
+      const isMatch = result => re.test(result.description)
 
       this.setState({
         isLoading: false,
@@ -56,12 +56,12 @@ export class SearchBoxCompare extends Component {
     }, 300)
   }
   render() {
-    const resultRenderer = ({ product_name,reference }) => 
+    const resultRenderer = ({ description }) => 
 
 	  <Grid>
 	     <Grid.Row>
 	      <Grid.Column width={16}>
-	        {reference}
+	        {description}
 	      </Grid.Column>
 	     </Grid.Row>
 	  </Grid>

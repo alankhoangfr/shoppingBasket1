@@ -59,4 +59,4 @@ const SuperMarketSchema = new Schema({
 	}
 })
 
-module.exports = SuperMarket = mongoose.model("supermarketwithitems",SuperMarketSchema)
+module.exports = SuperMarket = mongoose.model("supermarkets",SuperMarketSchema)

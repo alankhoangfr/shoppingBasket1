@@ -4,6 +4,8 @@ const router = express.Router()
 //Overall Model
 
 const OverAll = require("../../models/Overall")
+const SuperMarket = require("../../models/SuperMarket")
+const All_Item = require("../../models/all_item")
 
 router.get("/",(req,res)=>{
 	OverAll.findById(0)
@@ -60,32 +62,93 @@ router.patch("/space",(req,res)=>{
 	}
 	Overall.updateOne({_id:0},{$set:updateOps})
 	.exec()
-	.then(Overall.findById(0).then(info=>res.json(info)))
+	.then(Overall.findById(0).then(info=>{
+		if(info.basket.length===0){
+			res.json([])
+		}else{
+			info.basket.map(Code=>{
+			All_Item.find({shopId:Object.values(req.body)[0],Code:Code}).then(itemInfo=>{
+				res.json(itemInfo)
+				})
+			})
+		}
+	}))	
 	.catch(err=>res.status(404).json({
 		success: false,
 		message:err
 	}))
+		
 })
-router.patch("/basket",(req,res)=>{
-	Overall.updateOne({_id:0},{$push:{basket:req.body}})
-	.exec()
-	.then(Overall.findById(0).then(info=>res.json(info.basket)))
+
+router.get("/check",(req,res)=>{
+	var sendResult = (check,info,itemsInShop,notInShop)=>{
+			if(check.length===info.basket.length){
+				if(check.every(each=>each===true)){
+					res.json({"result":true,"info":itemsInShop})
+				}else{
+					res.json({"result":false,"info":notInShop})
+				}
+			}
+		}
+	OverAll.findById(0).
+	then(info=>{
+		var check=[]
+		var notInShop = []
+		var itemsInShop =[]
+			if(info.basket.length===0){
+				res.json({"result":true,"info":[]})
+			}else{
+				info.basket.map(Code=>{
+				All_Item.find({shopId:req.query.shopId,Code:Code}).then(itemInfo=>{
+					if (itemInfo.length===1){
+						itemsInShop.push(Code)
+						check.push(true)
+						sendResult(check,info,itemsInShop,notInShop)
+					}else{
+						notInShop.push(Code)
+						check.push(false)
+						sendResult(check,info,itemsInShop,notInShop)
+						}
+				})
+				.catch(err=>res.status(404).json({
+					success: false,
+					message:err
+				}))
+			})
+			}		
+	})
 	.catch(err=>res.status(404).json({
 		success: false,
 		message:err
 	}))
 })
 
+router.patch("/basket",(req,res)=>{
+	OverAll.findById(0).
+		then(info=>{
+			let result
+			var shops = {}
+			var space = [info.space1,info.space2,info.space3]
+			space = space.filter(s=>s!==null)
+			All_Item.find({shopId:{$in:space},Code:req.body.Code})
+				.then(items=>{
+					Overall.updateOne({_id:0},{$push:{basket:req.body.Code}}).exec()
+					res.json(items)})
+		})
+		.catch(err=>res.status(404).json({
+		success: false,
+		message:err
+		}))
+})
+
 router.patch("/deleteItemBasket",(req,res)=>{
 	Overall.findById(0)
 		.then(info=>{
-			var filteredBasket=[]
-			info.basket.map((item)=>{
-				if(item.Code!==req.body.Code){
-					filteredBasket.push(item)
-				}
-				if(filteredBasket.length===info.basket.length-1){
-					Overall.updateOne({_id:0},{$set:{basket:filteredBasket}})
+			var action = async()=>{
+				var filteredBasket = await info.basket.filter((item)=>{
+					return item!==req.body.Code
+				})
+				Overall.updateOne({_id:0},{$set:{basket:filteredBasket}})
 					.exec()
 					.then(Overall.findById(0).then(info=>{
 						res.json(info.basket)}))
@@ -93,8 +156,8 @@ router.patch("/deleteItemBasket",(req,res)=>{
 						success: false,
 						message:err
 					}))
-				}
-			})
+			}
+			action()
 		})
 })
 router.patch("/deleteAll",(req,res)=>{

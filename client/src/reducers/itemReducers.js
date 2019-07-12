@@ -15,8 +15,6 @@ export default function (state=initialState, action) {
 				totalItems:[...action.payload],
 				loading:false,
 			}
-
-
 		case FILTER_ITEMS:
 			return {
 				...state,

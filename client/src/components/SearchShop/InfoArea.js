@@ -73,7 +73,7 @@ export class InfoArea extends Component {
 						{markerObject.name}
 					</ListGroupItemHeading>
 					<ListGroupItemText>
-						{markerObject.Address}
+						{markerObject.completeAddress}
 						{this.props.compareBasket===true?<img src={add} onClick={this.onClickAdd.bind(this,markerObject)} align="right"/>:null}
 					</ListGroupItemText>
 					<ListGroupItemText>
@@ -88,16 +88,11 @@ export class InfoArea extends Component {
 			<ListGroupItem >
 				<ListGroupItemHeading>
 					{markerObject.name}
-					{this.props.compareBasket===true&&this.props.superMarket.markerSelected!==null?<img src={add} align="right" onClick={this.onClickAdd.bind(this,markerObject)}/>:null}
+					{this.props.compareBasket===true&&this.props.superMarket.markerSelected!==null?
+						<img src={add} align="right" onClick={this.onClickAdd.bind(this,markerObject)}/>:null}
 				</ListGroupItemHeading>
 				<ListGroupItemText>
-					{markerObject.Address}			
-				</ListGroupItemText>
-				<ListGroupItemText>
-					{markerObject.score}
-				</ListGroupItemText>
-				<ListGroupItemText>
-					{markerObject.details}
+					{markerObject.completeAddress}			
 				</ListGroupItemText>
 			</ListGroupItem>
 
@@ -131,7 +126,7 @@ export class InfoArea extends Component {
 			Zoom in to get a list of more stores
 		</div>
 	var infoFrame= () =>{
-		if(this.props.overAll.zoom===13){
+		if(this.props.overAll.zoom===12){
 				console.log("zoom in")
 				return zoomIn
 		}else{
