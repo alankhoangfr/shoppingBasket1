@@ -1,14 +1,21 @@
 import React, {Component} from "react"
 import { ListGroup, ListGroupItem,ListGroupItemText,ListGroupItemHeading} from 'reactstrap';
-import { TabContent, TabPane, Nav, NavItem, NavLink, Card, Button, CardTitle, CardText, Row, Col } from 'reactstrap';
-import add from "../../image/add.png"
+import { TabContent, TabPane, Nav, NavItem, NavLink, Card, CardTitle, CardText, Row, Col } from 'reactstrap';
 import classnames from 'classnames';
 import {connect} from "react-redux"
 import {getSuperMarkets,changeMarkerSelected} from "../../actions/SuperMarketActions"
 import PropTypes from "prop-types"
 import { Spinner } from 'reactstrap';
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
+import { styled } from '@material-ui/styles'
 
 
+const MyButton = styled(Fab)({
+  	position: 'absolute ',
+  	right:"10px",
+  	bottom:"20px"
+});
 export class InfoArea extends Component {
 	constructor(props){
 		super(props)
@@ -19,9 +26,15 @@ export class InfoArea extends Component {
 	}
 	shouldComponentUpdate(nextProps,nextState){
 		/*console.log(this.props,nextProps)*/
+		const {space1,space2,space3} = this.props.overAll
+		const spaces =[space1,space2,space3]
+		const nspaces =[nextProps.overAll.space1,nextProps.overAll.space2,nextProps.overAll.space3]
 		if (nextProps.superMarket.loading!==this.props.superMarket.loading){
 			return true
 		}else if (nextProps.overAll.zoom!==this.props.overAll.zoom){
+			return true
+		}
+		else if(nspaces!==spaces){
 			return true
 		}
 		else if(this.props.superMarket.markerSelected!==nextProps.superMarket.markerSelected&&nextProps.superMarket.markerSelected!==null){
@@ -57,6 +70,18 @@ export class InfoArea extends Component {
 	onClickAdd=(markerObject,event)=>{
 		this.props.shopSelectedCompare(markerObject)
 	}
+	insideTheSpace = (markerObject)=>{
+		const {space1,space2,space3}=this.props.overAll
+		const space = [space1!==null?space1.StoreId:null,space2!==null?space2.StoreId:null,space3!==null?space3.StoreId:null]
+		if(space.indexOf(markerObject.StoreId)===-1){
+			return (
+				<MyButton size="small" color="primary" aria-label="Add"  onClick={this.onClickAdd.bind(this,markerObject)} align="right">
+        			<AddIcon />
+      			</MyButton>)
+		}else {
+			return null
+		}
+	}
 	markersInBound = (markers)=>{
 		return markers.map((markerObject)=>{
 			let active = ""
@@ -73,8 +98,10 @@ export class InfoArea extends Component {
 						{markerObject.name}
 					</ListGroupItemHeading>
 					<ListGroupItemText>
-						{markerObject.completeAddress}
-						{this.props.compareBasket===true?<img src={add} onClick={this.onClickAdd.bind(this,markerObject)} align="right"/>:null}
+						{markerObject.Address}
+						{this.props.compareBasket===true?
+							this.insideTheSpace(markerObject)
+							:null}
 					</ListGroupItemText>
 					<ListGroupItemText>
 						{markerObject.score}
@@ -83,16 +110,17 @@ export class InfoArea extends Component {
 				)
 		})
 	}
+
 	focusOnMarker = (markerObject)=>{
 		return(
 			<ListGroupItem >
 				<ListGroupItemHeading>
 					{markerObject.name}
 					{this.props.compareBasket===true&&this.props.superMarket.markerSelected!==null?
-						<img src={add} align="right" onClick={this.onClickAdd.bind(this,markerObject)}/>:null}
+						this.insideTheSpace(markerObject):null}
 				</ListGroupItemHeading>
 				<ListGroupItemText>
-					{markerObject.completeAddress}			
+					{markerObject.Address}			
 				</ListGroupItemText>
 			</ListGroupItem>
 

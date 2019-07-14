@@ -5,7 +5,8 @@ import {connect} from "react-redux"
 import PropTypes from "prop-types"
 import { Card,CardBody,CardTitle } from 'reactstrap';
 import bin from "../../image/bin.png"
-
+import DeleteIcon from '@material-ui/icons/Delete';
+import Button from '@material-ui/core/Button';
 export class RemoveAllBasket extends React.Component {
    
 	onClick=(event)=>{
@@ -15,12 +16,10 @@ export class RemoveAllBasket extends React.Component {
     	
 	return (
         this.props.overAll.basket.length>0? 
-            <Card body className="text-center cardBasket" id="cardBasket" >
-                <CardTitle className="cardBasket" >Remove All Items from the Basket</CardTitle>
-                <CardBody className="cardBasket">
-                    <img width="50%" src={bin} onClick = {this.onClick} alt="Card image cap" style={{margin:"auto"}} className="cardBasket" />
-                </CardBody>
-            </Card>:null
+            <Button variant="contained" color="secondary"  onClick = {this.onClick} size="medium">
+                Delete All Items
+                <DeleteIcon  />
+            </Button>:null
 		)
 	}
 }

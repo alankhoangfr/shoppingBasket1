@@ -12,11 +12,8 @@ class App extends Component {
   render(){
   		return (
   			<Provider store ={store}>
-	   			<div>
-				    <AppNavBar/>
-				    <PageContent/>
-				    
-				</div>
+			    <AppNavBar/>
+			    <PageContent/>  
 			</Provider>
 
 	

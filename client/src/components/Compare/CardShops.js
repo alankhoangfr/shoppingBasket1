@@ -6,8 +6,21 @@ import {getInfo,deleteItemFromBasket,addItemToBasket,registerSpace,deleteAllBask
 import {filterItems} from "../../actions/ItemsAction"
 import {connect} from "react-redux"
 import PropTypes from "prop-types"
-import cancel from "../../image/cancel.png"
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';	
+import ClearIcon from '@material-ui/icons/Clear';	
+import { styled } from '@material-ui/styles'
 
+
+const MyIconDelete = styled(IconButton)({
+  	position: 'relative ',
+  	right:"10px",
+});
+const MyIconCancel = styled(IconButton)({
+  	position: 'absolute ',
+  	left:"0px",
+  	top:"10px"
+});
 export class CardShops extends Component{
 	constructor(props){
 		super(props)
@@ -228,7 +241,9 @@ export class CardShops extends Component{
 			<Card body className="text-center" >
 				<CardTitle>
 					{space.name} 
-					<img src={cancel} align="right" width="16px" onClick={this.cancel} id={id}/>
+				<MyIconCancel aria-label="Clear" onClick={this.cancel} id={id}>
+        			<ClearIcon />
+     			</MyIconCancel>
 				</CardTitle>
 				<CardSubtitle>{space.completeAddress}</CardSubtitle>
 				<Table borderless hover responsive>
@@ -248,7 +263,10 @@ export class CardShops extends Component{
 			        		const total = (parseFloat(eachItem.quantity)*parseFloat(priceOfItem)).toFixed(2)
 			        		return(
 			        			<tr>
-			        				<img src={cancel} align="right" width="8px" onClick={this.cancelItem.bind(this,eachItem)} id={id}/>
+			        				<MyIconDelete aria-label="Delete" onClick={this.cancelItem.bind(this,eachItem)}  id={id}>
+        								<DeleteIcon />
+     				 				</MyIconDelete>
+			        				
 			        				<td style={{fontSize:"x-small", padding:"4px"}}>{eachItem.quantity}</td>
 			        				<td style={{fontSize:"x-small", padding:"4px"}}>{eachItem["description"]}</td>
 			        				<td style={{fontSize:"x-small", padding:"3px"}}>$ {priceOfItem}</td>
