@@ -241,9 +241,9 @@ export class CardShops extends Component{
 			<Card body className="text-center" >
 				<CardTitle>
 					{space.name} 
-				<MyIconCancel aria-label="Clear" onClick={this.cancel} id={id}>
-        			<ClearIcon />
-     			</MyIconCancel>
+					<MyIconCancel aria-label="Clear" onClick={this.cancel} id={id}>
+        				<ClearIcon />
+     				</MyIconCancel>
 				</CardTitle>
 				<CardSubtitle>{space.completeAddress}</CardSubtitle>
 				<Table borderless hover responsive>
