@@ -9,6 +9,7 @@ import {getSuperMarkets,getSuperMarketsMarkers} from "../actions/SuperMarketActi
 import {getInfo,updateInfo} from "../actions/OverAllActions"
 import {connect} from "react-redux"
 import PropTypes from "prop-types"
+import LoadingOverlay from 'react-loading-overlay'
 
 export class CompareBasket extends Component{
 	constructor(props){
@@ -52,7 +53,11 @@ export class CompareBasket extends Component{
 		return (
 			
 			<React.Fragment>
-	
+				<LoadingOverlay
+			  	active={this.props.item.loading}
+				spinner
+				text='Loading your content...'
+				>		
 					<SearchShop
 						fromAddItem = {true}
 						compareBasket={true}
@@ -62,6 +67,8 @@ export class CompareBasket extends Component{
 					<Container style={{marginTop:"50px"}}>
 						<Row>
 							<Col sm={3}  style={{zIndex:"1"}}>
+								<Basket
+									itemOnDrag={this.state.itemOnDrag}/>
 								{shopSelected}
 							</Col>		
 						<CardShops
@@ -70,7 +77,7 @@ export class CompareBasket extends Component{
 							cancelCardSpace={this.cancelCardSpace}/>
 						</Row>
 					</Container>
-
+				</LoadingOverlay>
 			</React.Fragment>
 			)
 	}

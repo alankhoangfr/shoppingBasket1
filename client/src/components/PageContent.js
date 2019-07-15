@@ -8,7 +8,6 @@ import {getInfo,updateInfo} from "../actions/OverAllActions"
 import {getItems} from "../actions/ItemsAction"
 import {connect} from "react-redux"
 import PropTypes from "prop-types"
-import LoadingOverlay from 'react-loading-overlay'
 
 class PageContent extends Component {
 		start = async()=>{
@@ -31,18 +30,12 @@ class PageContent extends Component {
 	}
 	render(){
 		return(
-		<LoadingOverlay
-	  	active={this.props.item.loading}
-		spinner
-		text='Loading your content...'
-		>	
 			<div>
 				<Switch>
 					<Route exact path="/" component={CompareBasket}/>
 					
 				</Switch>
 			</div>
-		</LoadingOverlay>
 			);
 	}
 }
