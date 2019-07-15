@@ -67,8 +67,6 @@ export class CompareBasket extends Component{
 					<Container style={{marginTop:"50px"}}>
 						<Row>
 							<Col sm={3}  style={{zIndex:"1"}}>
-								<Basket
-									itemOnDrag={this.state.itemOnDrag}/>
 								{shopSelected}
 							</Col>		
 						<CardShops

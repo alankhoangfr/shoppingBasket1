@@ -10,7 +10,18 @@ const SuperMarket = require("../../models/SuperMarket")
 const OverAll = require("../../models/Overall")
 
 router.get("/filterItems",(req,res)=>{
-	All_Item.find({shopId:{$in:req.query.space}})
+	const spaceId = req.query.space.map(each=>{
+		if(each!='null'){
+			return parseInt(each)
+		}else if(each==='null'){
+			return null
+		}
+	})
+	if( req.query.space.every(each=>each==='null')){
+		res.json([])
+	}
+	else{
+		All_Item.find({shopId:{$in:spaceId}})
 		.then(items=>{
 			var action = async ()=>{
 				var ItemCode= await items.map(item=>item.Code)
@@ -44,6 +55,8 @@ router.get("/filterItems",(req,res)=>{
 			success:false,
 			comment:err
 		}))
+	}
+	
 			
 })
 

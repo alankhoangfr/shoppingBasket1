@@ -152,16 +152,16 @@ export class CardShops extends Component{
 		}
 
 	}
-	cancel=(event)=>{
+	cancel=(name,event)=>{
 		const {space1,space2,space3} = this.props.overAll
 		const spaces =[space1,space2,space3]
 		const spacesId =[space1===null?null:space1.StoreId,space2===null?null:space2.StoreId,space3===null?null:space2.StoreId]
 		const spaces_text = ["space1","space2","space3"]
 		const numberOfNon = spaces.filter((s,index)=>
-			spaces_text[index]!==event.target.id && s!==null
+			spaces_text[index]!==name && s!==null
 		)
 		const numberOfNonID=spacesId.filter((s,index)=>
-			spaces_text[index]!==event.target.id && s!==null
+			spaces_text[index]!==name && s!==null
 		)
 		var reformedSpace = {}
 		spaces_text.map((s,index)=>{
@@ -175,13 +175,13 @@ export class CardShops extends Component{
 			space3:reformedSpace["space3"]===null?null:reformedSpace["space3"].StoreId
 		}
 		
-		/*console.log(reformedSpace,reformedSpaceId)*/
+		console.log(reformedSpace,reformedSpaceId)
 		var i = 0
 		while(true){
 			if(i>spaces.length-1){
 				break
 			}else{
-				if(spaces_text[i]===event.target.id){
+				if(spaces_text[i]===name){
 					break
 				}
 				else if(spaces[i]!==null){
@@ -239,11 +239,11 @@ export class CardShops extends Component{
 	render(){
 		var cardComparsion=(space,id) => ( 	
 			<Card body className="text-center" >
-				<CardTitle>
+				<MyIconCancel aria-label="Clear" onClick={this.cancel.bind(this,id)}>
+        			<ClearIcon />
+     			</MyIconCancel>
+				<CardTitle style={{position:"relative",left:"20px"}}>
 					{space.name} 
-					<MyIconCancel aria-label="Clear" onClick={this.cancel} id={id}>
-        				<ClearIcon />
-     				</MyIconCancel>
 				</CardTitle>
 				<CardSubtitle>{space.completeAddress}</CardSubtitle>
 				<Table borderless hover responsive>
@@ -263,7 +263,7 @@ export class CardShops extends Component{
 			        		const total = (parseFloat(eachItem.quantity)*parseFloat(priceOfItem)).toFixed(2)
 			        		return(
 			        			<tr>
-			        				<MyIconDelete aria-label="Delete" onClick={this.cancelItem.bind(this,eachItem)}  id={id}>
+			        				<MyIconDelete aria-label="Delete" onClick={this.cancelItem.bind(this,eachItem)}>
         								<DeleteIcon />
      				 				</MyIconDelete>
 			        				

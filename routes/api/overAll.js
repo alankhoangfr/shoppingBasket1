@@ -66,7 +66,7 @@ router.patch("/space",(req,res)=>{
 		if(info.basket.length===0){
 			res.json([])
 		}else{
-			All_Item.find({shopId:Object.values(req.body)[0],Code:{$in:info.basket}}).then(itemInfo=>{
+			All_Item.find({shopId:parseInt(Object.values(req.body)[0]),Code:{$in:info.basket}}).then(itemInfo=>{
 				res.json(itemInfo)
 			})
 		}
@@ -97,7 +97,7 @@ router.get("/check",(req,res)=>{
 				res.json({"result":true,"info":[]})
 			}else{
 				info.basket.map(Code=>{
-				All_Item.find({shopId:req.query.shopId,Code:Code}).then(itemInfo=>{
+				All_Item.find({shopId:parseInt(req.query.shopId),Code:Code}).then(itemInfo=>{
 					if (itemInfo.length===1){
 						itemsInShop.push(Code)
 						check.push(true)
@@ -126,9 +126,10 @@ router.patch("/basket",(req,res)=>{
 		then(info=>{
 			let result
 			var shops = {}
-			var space = [info.space1,info.space2,info.space3]
-			space = space.filter(s=>s!==null)
-			All_Item.find({shopId:{$in:space},Code:req.body.Code})
+			const space = [info.space1,info.space2,info.space3]
+			const spaceId = space.map(each=>pareseInt(each))
+			spaceId = spaceId.filter(s=>s!==null)
+			All_Item.find({shopId:{$in:spaceId},Code:req.body.Code})
 				.then(items=>{
 					Overall.updateOne({_id:0},{$push:{basket:req.body.Code}}).exec()
 					res.json(items)})

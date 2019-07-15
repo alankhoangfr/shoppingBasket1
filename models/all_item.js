@@ -24,4 +24,4 @@ const all_itemsSchema = new Schema({
 	}
 })
 
-module.exports = All_Item = mongoose.model("all_items_all",all_itemsSchema)
+module.exports = All_Item = mongoose.model("itemsofengland",all_itemsSchema)

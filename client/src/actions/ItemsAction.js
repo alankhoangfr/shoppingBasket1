@@ -13,7 +13,10 @@ export const getItems= () =>dispatch =>{
 }
 export const filterItems = (space) =>dispatch =>{
 	dispatch(setItemsLoading())
-	const filteredSpace = space.filter((s)=>s!==null)
+	var filteredSpace = space.filter((s)=>s!==null)
+	if(space.every(each=>each===null)){
+		filteredSpace = [null,null,null]
+	}
 	axios
 		.get("api/all_item/filterItems",{
 			params:{
