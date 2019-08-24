@@ -30,11 +30,8 @@ class PageContent extends Component {
 	}
 	render(){
 		return(
-			<div>
-				<Switch>
-					<Route exact path="/" component={CompareBasket}/>
-					
-				</Switch>
+			<div id="content">
+				<CompareBasket/>	
 			</div>
 			);
 	}

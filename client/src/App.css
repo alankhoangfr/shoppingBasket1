@@ -1,9 +1,21 @@
-
-
+#root{
+	height:100%;
+}
+#content{
+	height:100%;
+}
 @media only screen and (min-width : 1200px) {
 
     .container { 
     	width: 85%; 
     	max-width: 1600px;} 
 
+}
+
+._loading_overlay_wrapper {
+	height:100%;
+}
+
+html {
+  scroll-behavior: smooth;
 }

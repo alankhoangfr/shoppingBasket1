@@ -3,6 +3,7 @@ import SearchShop from "./SearchShop"
 import ItemDisplay from "./Compare/ItemDisplay"
 import {Container, Row,Col} from 'reactstrap';
 import CardShops from "./Compare/CardShops"
+import OpeningModal from "./OpeningModal"
 import Basket from "./Compare/Basket"
 import RemoveAllBasket	 from "./Compare/RemoveAllBasket"
 import {getSuperMarkets,getSuperMarketsMarkers} from "../actions/SuperMarketActions"
@@ -18,7 +19,7 @@ export class CompareBasket extends Component{
 			itemOnDrag:"",
 			shopSelectedCompare:null,	
 			allSpace:true,
-			space:[]
+			space:[],
 		}
 	}
 
@@ -38,7 +39,6 @@ export class CompareBasket extends Component{
 	cancelCardSpace=()=>{
 		this.setState({shopSelectedCompare:null})
 	}
-
 	render(){
 		let shopSelected = 
 			<div>
@@ -53,6 +53,9 @@ export class CompareBasket extends Component{
 		return (
 			
 			<React.Fragment>
+				<div>
+					<OpeningModal/>
+				</div>
 				<LoadingOverlay
 			  	active={this.props.item.loading}
 				spinner
