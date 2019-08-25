@@ -163,7 +163,7 @@ const OpeningModal = (props)=>{
 					    </Typography>
 					    <Typography variant="body1" gutterBottom>
 					        The app for comparing items is not something new as sites such as Expedia compare hotel, plane and many more prices. 
-					        The difference CompareBasket and other apps is that the app can compare supermarkets according to a basket of goods.
+					        The difference between CompareBasket and other apps is that the app can compare supermarkets according to a basket of goods.
 					        When most people go to the supermarket, they will buy a basket of goods (weekly shopping, ingredients for a recipe) and 
 					        will not individually compare each item and respectively buy those items in their surrounding supermarkets. 
 					        It is simply time and money consuming.
@@ -185,22 +185,22 @@ const OpeningModal = (props)=>{
       					</Typography>
       					<br></br>
       					<Typography variant="body1" gutterBottom>
-					    	The currently user interface for searching a product is simply a recommended drop-down list. There needs to be a 
-					    	development in a user friendly interface for searching and placing products in a basket. An initial constraint of
+					    	The current user interface for searching a product is simply a recommended drop-down list. There needs to be a 
+					    	development for a user friendly interface for searching and placing products in a basket. An initial constraint of
 					    	 given supermarkets for comparison must be provided so that the searching interface provides only products and 
 					    	 variation of the products that are in common in the given supermarkets. In addition, unlike the current app where 
-					    	 a maximum of supermarket comparison is 3, the app could as many supermarkets in a given radius of a position.
+					    	 a maximum of supermarket comparison is 3, the app could compare as many supermarkets in a given radius of a position.
       					</Typography>
       					<br></br>
       					<Typography variant="body1" gutterBottom>
-							Once the app has determined the which supermarket has the cheapest basket, it can send a buy request of that 
-							basket to that supermarket. In addition, the app could have an algorithm that can determine whether if it is 
-							an efficient alternative to buy a few selected foods at different supermarket. It will take into consideration 
+							Once the app has determined which supermarket has the cheapest basket, it can send a buy request of that 
+							basket to that supermarket. In addition, the app could have an algorithm that can determine a more 
+							efficient alternative such as buying few selected foods at different supermarkets. It will take into consideration 
 							of delivery costs from each supermarket.
       					</Typography>
       					<br></br>
       					<Typography variant="body1" gutterBottom>
-					    	There is a big amount of development work required but a focus on the business side is more important currently in 
+					    	There is a big amount of development work required but a focus on the business side is more important in 
 					    	order to justify for the development work. The current state of the app shows that it is possible to compare a basket 
 					    	of goods from over 10000 supermarkets and 2000 food items.
       					</Typography>
